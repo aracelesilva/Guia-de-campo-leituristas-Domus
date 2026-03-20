@@ -1,0 +1,1677 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#E8560A">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Leiturista">
+<meta name="description" content="Guia de campo para leituristas Domus Soluções">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.svg">
+<title>Leiturista · Domus</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --orange: #E8560A;
+    --orange-dark: #B84008;
+    --orange-light: #FF7A3D;
+    --orange-faint: #FFF0E8;
+    --dark: #111111;
+    --mid: #444444;
+    --light: #888888;
+    --bg: #F7F4F0;
+    --card: #FFFFFF;
+    --border: #E5E0D8;
+    --green: #1E8A4C;
+    --green-bg: #EBF7F0;
+    --red: #C0392B;
+    --red-bg: #FDF0EF;
+    --yellow: #F39C12;
+    --yellow-bg: #FEF9EE;
+    --blue: #1565C0;
+    --blue-bg: #E8F0FE;
+    --radius: 14px;
+    --radius-sm: 8px;
+    --shadow: 0 2px 12px rgba(0,0,0,0.07);
+    --shadow-md: 0 4px 24px rgba(0,0,0,0.10);
+    --font: 'DM Sans', sans-serif;
+    --mono: 'Space Mono', monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+  html, body {
+    height: 100%;
+    font-family: var(--font);
+    background: var(--bg);
+    color: var(--dark);
+    overflow: hidden;
+    overscroll-behavior: none;
+  }
+
+  /* ========== SHELL ========== */
+  #app {
+    display: flex;
+    flex-direction: column;
+    height: 100dvh;
+    max-width: 480px;
+    margin: 0 auto;
+    position: relative;
+    overflow: hidden;
+    background: var(--bg);
+  }
+
+  /* ========== TOPBAR ========== */
+  #topbar {
+    background: var(--orange);
+    padding: env(safe-area-inset-top, 0) 0 0;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 10;
+  }
+  #topbar-inner {
+    display: flex;
+    align-items: center;
+    padding: 14px 16px 12px;
+    gap: 10px;
+  }
+  #topbar-back {
+    display: none;
+    background: rgba(255,255,255,0.2);
+    border: none;
+    border-radius: 8px;
+    width: 36px; height: 36px;
+    align-items: center; justify-content: center;
+    cursor: pointer;
+    color: white;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  #topbar-back.show { display: flex; }
+  #topbar-title {
+    flex: 1;
+    color: white;
+    font-size: 17px;
+    font-weight: 600;
+    letter-spacing: -0.3px;
+  }
+  #topbar-logo {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: rgba(255,255,255,0.7);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    flex-shrink: 0;
+  }
+
+  /* ========== SCROLL AREA ========== */
+  #content {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-y: contain;
+  }
+
+  /* ========== BOTTOM NAV ========== */
+  #bottomnav {
+    background: var(--card);
+    border-top: 1px solid var(--border);
+    display: flex;
+    padding-bottom: env(safe-area-inset-bottom, 0);
+    flex-shrink: 0;
+    z-index: 10;
+  }
+  .nav-btn {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 4px 8px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    gap: 3px;
+    position: relative;
+    transition: transform 0.1s;
+  }
+  .nav-btn:active { transform: scale(0.92); }
+  .nav-icon {
+    font-size: 22px;
+    transition: transform 0.2s;
+  }
+  .nav-label {
+    font-size: 10px;
+    font-weight: 500;
+    color: var(--light);
+    letter-spacing: 0.2px;
+    transition: color 0.2s;
+  }
+  .nav-btn.active .nav-label { color: var(--orange); }
+  .nav-btn.active .nav-icon { transform: scale(1.1); }
+  .nav-btn::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 20%; right: 20%;
+    height: 2px;
+    background: var(--orange);
+    border-radius: 0 0 4px 4px;
+    transform: scaleX(0);
+    transition: transform 0.2s;
+  }
+  .nav-btn.active::after { transform: scaleX(1); }
+
+  /* ========== PAGES ========== */
+  .page { display: none; padding: 16px; }
+  .page.active { display: block; }
+
+  /* ========== HOME PAGE ========== */
+  .home-hero {
+    background: linear-gradient(135deg, var(--orange) 0%, var(--orange-dark) 100%);
+    border-radius: var(--radius);
+    padding: 24px 20px;
+    margin-bottom: 20px;
+    position: relative;
+    overflow: hidden;
+  }
+  .home-hero::before {
+    content: '';
+    position: absolute;
+    top: -30px; right: -30px;
+    width: 130px; height: 130px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.08);
+  }
+  .home-hero::after {
+    content: '';
+    position: absolute;
+    bottom: -40px; right: 20px;
+    width: 90px; height: 90px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.05);
+  }
+  .home-hero h2 {
+    color: white;
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 8px;
+  }
+  .home-hero p {
+    color: rgba(255,255,255,0.82);
+    font-size: 13px;
+    line-height: 1.5;
+  }
+  .hero-badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.2);
+    color: white;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 20px;
+    margin-bottom: 10px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+
+  .section-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    color: var(--light);
+    margin-bottom: 10px;
+    margin-top: 4px;
+  }
+
+  .quick-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  .quick-card {
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 16px 14px;
+    box-shadow: var(--shadow);
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s;
+    border: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+  .quick-card:active { transform: scale(0.96); box-shadow: none; }
+  .quick-card .qc-icon { font-size: 26px; margin-bottom: 8px; display: block; }
+  .quick-card .qc-title { font-size: 13px; font-weight: 600; color: var(--dark); line-height: 1.3; }
+  .quick-card .qc-sub { font-size: 11px; color: var(--light); margin-top: 3px; }
+  .quick-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 3px;
+    border-radius: 0 0 var(--radius) var(--radius);
+  }
+  .quick-card.orange::after { background: var(--orange); }
+  .quick-card.green::after { background: var(--green); }
+  .quick-card.blue::after { background: var(--blue); }
+  .quick-card.red::after { background: var(--red); }
+
+  /* ========== MANUAL PAGE ========== */
+  .manual-list { display: flex; flex-direction: column; gap: 8px; }
+  .manual-item {
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    cursor: pointer;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+    transition: transform 0.15s;
+  }
+  .manual-item:active { transform: scale(0.98); }
+  .manual-item-icon {
+    width: 44px; height: 44px;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+    flex-shrink: 0;
+  }
+  .manual-item-text { flex: 1; }
+  .manual-item-num {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--light);
+    margin-bottom: 2px;
+  }
+  .manual-item-title { font-size: 14px; font-weight: 600; color: var(--dark); }
+  .manual-item-arrow { color: var(--light); font-size: 14px; }
+
+  /* ========== DETAIL PAGE ========== */
+  #detail-page { padding: 0; }
+  #detail-content { padding: 16px; }
+
+  .detail-header {
+    background: linear-gradient(135deg, var(--orange) 0%, var(--orange-dark) 100%);
+    padding: 24px 20px 20px;
+    margin-bottom: 0;
+  }
+  .detail-header-icon { font-size: 36px; margin-bottom: 10px; display: block; }
+  .detail-header h2 { color: white; font-size: 20px; font-weight: 700; line-height: 1.2; }
+  .detail-header p { color: rgba(255,255,255,0.8); font-size: 13px; margin-top: 6px; line-height: 1.5; }
+
+  .content-block { margin-bottom: 18px; }
+  .content-block h3 {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--orange);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .info-card {
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 14px 16px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--mid);
+  }
+
+  .bullet-list { display: flex; flex-direction: column; gap: 8px; }
+  .bullet-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    background: var(--card);
+    border-radius: var(--radius-sm);
+    padding: 10px 14px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+    font-size: 13px;
+    color: var(--mid);
+    line-height: 1.4;
+  }
+  .bullet-item .bi-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--orange);
+    flex-shrink: 0;
+    margin-top: 6px;
+  }
+
+  .step-list { display: flex; flex-direction: column; gap: 8px; }
+  .step-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    background: var(--card);
+    border-radius: var(--radius-sm);
+    padding: 12px 14px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+  }
+  .step-num {
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    background: var(--orange);
+    color: white;
+    font-size: 12px;
+    font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    font-family: var(--mono);
+  }
+  .step-text { font-size: 13px; color: var(--mid); line-height: 1.5; padding-top: 3px; }
+
+  .alert-box {
+    border-radius: var(--radius);
+    padding: 14px 16px;
+    margin-bottom: 10px;
+  }
+  .alert-box .ab-title {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .alert-box .ab-body { font-size: 13px; line-height: 1.5; }
+  .alert-box .ab-body li { margin-left: 14px; margin-top: 4px; }
+  .alert-yellow { background: var(--yellow-bg); border: 1px solid #F9D27D; }
+  .alert-yellow .ab-title { color: #9A6700; }
+  .alert-yellow .ab-body { color: #7A5200; }
+  .alert-red { background: var(--red-bg); border: 1px solid #F5B7B1; }
+  .alert-red .ab-title { color: var(--red); }
+  .alert-red .ab-body { color: #922B21; }
+  .alert-green { background: var(--green-bg); border: 1px solid #A9DFBF; }
+  .alert-green .ab-title { color: #1A7A3F; }
+  .alert-green .ab-body { color: #1A6035; }
+  .alert-blue { background: var(--blue-bg); border: 1px solid #90CAF9; }
+  .alert-blue .ab-title { color: var(--blue); }
+  .alert-blue .ab-body { color: #0D47A1; }
+
+  .tag-row { display: flex; flex-wrap: wrap; gap: 8px; }
+  .tag {
+    background: var(--orange-faint);
+    color: var(--orange);
+    font-size: 12px;
+    font-weight: 600;
+    padding: 5px 12px;
+    border-radius: 20px;
+    border: 1px solid #F5C4A8;
+  }
+  .tag.blue { background: var(--blue-bg); color: var(--blue); border-color: #90CAF9; }
+  .tag.green { background: var(--green-bg); color: var(--green); border-color: #A9DFBF; }
+  .tag.red { background: var(--red-bg); color: var(--red); border-color: #F5B7B1; }
+
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .mini-card {
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 14px 12px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+    text-align: center;
+  }
+  .mini-card .mc-icon { font-size: 26px; margin-bottom: 6px; }
+  .mini-card .mc-title { font-size: 12px; font-weight: 700; color: var(--dark); }
+  .mini-card .mc-desc { font-size: 11px; color: var(--light); margin-top: 4px; line-height: 1.4; }
+
+  /* ========== CHECKLIST PAGE ========== */
+  .checklist-selector { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+  .cl-option {
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    cursor: pointer;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+    transition: transform 0.15s, border-color 0.15s;
+  }
+  .cl-option:active { transform: scale(0.98); }
+  .cl-option-icon { font-size: 28px; }
+  .cl-option-text { flex: 1; }
+  .cl-option-title { font-size: 14px; font-weight: 600; color: var(--dark); }
+  .cl-option-sub { font-size: 12px; color: var(--light); margin-top: 2px; }
+  .cl-option-arrow { color: var(--light); }
+
+  /* Active checklist */
+  #active-checklist { display: none; }
+  #active-checklist.show { display: block; }
+  #checklist-selector-view.hide { display: none; }
+
+  .cl-progress-bar {
+    height: 4px;
+    background: var(--border);
+    border-radius: 2px;
+    margin-bottom: 16px;
+    overflow: hidden;
+  }
+  .cl-progress-fill {
+    height: 100%;
+    background: var(--green);
+    border-radius: 2px;
+    transition: width 0.3s ease;
+  }
+
+  .cl-item {
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 14px 16px;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .cl-item.checked {
+    background: var(--green-bg);
+    border-color: #A9DFBF;
+  }
+  .cl-checkbox {
+    width: 22px; height: 22px;
+    border-radius: 6px;
+    border: 2px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    transition: all 0.2s;
+    background: white;
+    font-size: 12px;
+  }
+  .cl-item.checked .cl-checkbox {
+    background: var(--green);
+    border-color: var(--green);
+    color: white;
+  }
+  .cl-text { flex: 1; }
+  .cl-title { font-size: 13px; font-weight: 500; color: var(--dark); line-height: 1.4; }
+  .cl-item.checked .cl-title { color: var(--green); text-decoration: line-through; text-decoration-color: #A9DFBF; }
+  .cl-note { font-size: 11px; color: var(--light); margin-top: 3px; line-height: 1.4; }
+
+  .cl-section-title {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--light);
+    margin: 16px 0 8px;
+  }
+
+  .cl-done-banner {
+    display: none;
+    background: var(--green);
+    border-radius: var(--radius);
+    padding: 16px;
+    text-align: center;
+    margin-top: 16px;
+  }
+  .cl-done-banner.show { display: block; }
+  .cl-done-banner p { color: white; font-weight: 600; font-size: 15px; }
+  .cl-done-banner span { font-size: 28px; display: block; margin-bottom: 8px; }
+
+  .cl-reset-btn {
+    display: block;
+    width: 100%;
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 12px;
+    font-size: 13px;
+    color: var(--light);
+    cursor: pointer;
+    margin-top: 10px;
+    font-family: var(--font);
+    transition: all 0.2s;
+  }
+  .cl-reset-btn:active { background: var(--bg); }
+
+  .btn-back-cl {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: none;
+    border: none;
+    font-family: var(--font);
+    font-size: 13px;
+    color: var(--orange);
+    font-weight: 600;
+    cursor: pointer;
+    padding: 4px 0 12px;
+  }
+
+  /* ========== FADE TRANSITION ========== */
+  .fade-in {
+    animation: fadeIn 0.22s ease-out;
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ========== ONBOARDING ========== */
+  #onboarding {
+    position: fixed; inset: 0; background: var(--bg); z-index: 100;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    padding: 32px 24px; max-width: 480px; margin: 0 auto;
+  }
+  #onboarding.hidden { display: none; }
+  .onb-logo {
+    width: 72px; height: 72px; background: var(--orange); border-radius: 20px;
+    display: flex; align-items: center; justify-content: center; font-size: 36px;
+    margin-bottom: 28px; box-shadow: 0 8px 24px rgba(232,86,10,0.3);
+  }
+  .onb-title { font-size: 26px; font-weight: 700; color: var(--dark); text-align: center; margin-bottom: 8px; }
+  .onb-sub { font-size: 14px; color: var(--light); text-align: center; margin-bottom: 36px; line-height: 1.5; }
+  .onb-form { width: 100%; display: flex; flex-direction: column; gap: 14px; }
+  .onb-field label { display: block; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: var(--light); margin-bottom: 6px; }
+  .onb-field input, .onb-field select {
+    width: 100%; padding: 14px 16px; border-radius: var(--radius); border: 1.5px solid var(--border);
+    background: var(--card); font-size: 15px; font-family: var(--font); color: var(--dark);
+    outline: none; transition: border-color 0.2s; -webkit-appearance: none;
+  }
+  .onb-field input:focus, .onb-field select:focus { border-color: var(--orange); }
+  .onb-btn {
+    width: 100%; padding: 16px; background: var(--orange); color: white; border: none;
+    border-radius: var(--radius); font-size: 16px; font-weight: 700; font-family: var(--font);
+    cursor: pointer; margin-top: 8px; transition: background 0.2s, transform 0.1s;
+  }
+  .onb-btn:active { background: var(--orange-dark); transform: scale(0.98); }
+
+  /* ========== GESTOR LOCK ========== */
+  #gestor-lock {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 50;
+    display: flex; align-items: center; justify-content: center; padding: 24px;
+  }
+  #gestor-lock.hidden { display: none; }
+  .lock-card { background: white; border-radius: var(--radius); padding: 28px 24px; width: 100%; max-width: 320px; text-align: center; }
+  .lock-card h3 { font-size: 18px; font-weight: 700; margin-bottom: 6px; }
+  .lock-card p { font-size: 13px; color: var(--light); margin-bottom: 20px; }
+  .lock-card input {
+    width: 100%; padding: 12px 16px; border-radius: var(--radius-sm); border: 1.5px solid var(--border);
+    font-size: 20px; text-align: center; letter-spacing: 6px; font-family: var(--mono); outline: none; margin-bottom: 12px;
+  }
+  .lock-card input:focus { border-color: var(--orange); }
+  .lock-btn { width: 100%; padding: 12px; background: var(--orange); color: white; border: none; border-radius: var(--radius-sm); font-size: 15px; font-weight: 700; font-family: var(--font); cursor: pointer; margin-bottom: 8px; }
+  .lock-cancel { background: none; border: none; color: var(--light); font-size: 13px; cursor: pointer; font-family: var(--font); padding: 8px; }
+  .lock-error { color: var(--red); font-size: 12px; margin-top: -4px; margin-bottom: 8px; display: none; }
+  .lock-error.show { display: block; }
+
+  /* ========== GESTOR PAGE ========== */
+  .gestor-summary { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+  .stat-card { background: var(--card); border-radius: var(--radius); padding: 16px; box-shadow: var(--shadow); border: 1px solid var(--border); text-align: center; }
+  .stat-num { font-size: 32px; font-weight: 700; font-family: var(--mono); color: var(--orange); line-height: 1; margin-bottom: 4px; }
+  .stat-label { font-size: 11px; color: var(--light); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+  .leiturista-card { background: var(--card); border-radius: var(--radius); padding: 16px; margin-bottom: 10px; box-shadow: var(--shadow); border: 1px solid var(--border); }
+  .lc-header { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; cursor: pointer; }
+  .lc-avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--orange); color: white; font-size: 16px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-family: var(--mono); }
+  .lc-info { flex: 1; }
+  .lc-name { font-size: 14px; font-weight: 700; color: var(--dark); }
+  .lc-base { font-size: 12px; color: var(--light); margin-top: 1px; }
+  .lc-toggle { color: var(--light); font-size: 12px; }
+  .lc-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 12px; }
+  .lc-stat { background: var(--bg); border-radius: var(--radius-sm); padding: 8px; text-align: center; }
+  .lc-stat-num { font-size: 18px; font-weight: 700; color: var(--orange); font-family: var(--mono); }
+  .lc-stat-label { font-size: 10px; color: var(--light); margin-top: 2px; }
+  .lc-history { display: none; }
+  .lc-history.open { display: block; }
+  .lc-history-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: var(--light); margin-bottom: 8px; }
+  .history-item { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 12px; }
+  .history-item:last-child { border-bottom: none; }
+  .history-icon { font-size: 16px; }
+  .history-text { flex: 1; color: var(--mid); }
+  .history-date { color: var(--light); font-size: 11px; font-family: var(--mono); }
+  .no-data { text-align: center; padding: 40px 20px; color: var(--light); font-size: 14px; }
+  .no-data span { font-size: 40px; display: block; margin-bottom: 12px; }
+
+  /* ========== PROFILE CHIP ========== */
+  .profile-chip { display: flex; align-items: center; gap: 6px; background: rgba(255,255,255,0.2); border-radius: 20px; padding: 4px 10px 4px 4px; cursor: pointer; }
+  .profile-chip-avatar { width: 24px; height: 24px; border-radius: 50%; background: rgba(255,255,255,0.9); color: var(--orange); font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; font-family: var(--mono); }
+  .profile-chip-name { font-size: 12px; color: white; font-weight: 600; max-width: 80px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+  /* ========== OFFLINE BADGE ========== */
+  #offline-badge {
+    display: none;
+    position: fixed;
+    bottom: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #333;
+    color: white;
+    font-size: 12px;
+    padding: 8px 16px;
+    border-radius: 20px;
+    z-index: 999;
+    white-space: nowrap;
+  }
+  #offline-badge.show { display: block; }
+
+  /* ========== SCROLLBAR ========== */
+  #content::-webkit-scrollbar { width: 3px; }
+  #content::-webkit-scrollbar-track { background: transparent; }
+  #content::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+</style>
+</head>
+<body>
+<!-- ONBOARDING -->
+<div id="onboarding">
+  <div class="onb-logo">🔢</div>
+  <div class="onb-title">Domus Leiturista</div>
+  <div class="onb-sub">Bem-vindo! Antes de começar,<br>informe seus dados de identificação.</div>
+  <div class="onb-form">
+    <div class="onb-field">
+      <label>Seu nome</label>
+      <input type="text" id="onb-nome" placeholder="Ex: Edson Silva" autocomplete="name">
+    </div>
+    <div class="onb-field">
+      <label>Base prestadora</label>
+      <input type="text" id="onb-base" placeholder="Ex: Caxias do Sul">
+    </div>
+    <button class="onb-btn" onclick="saveProfile()">Entrar no app →</button>
+  </div>
+</div>
+
+<!-- GESTOR LOCK -->
+<div id="gestor-lock" class="hidden">
+  <div class="lock-card">
+    <div style="font-size:32px;margin-bottom:12px">🔐</div>
+    <h3>Painel do Gestor</h3>
+    <p>Digite o PIN de acesso para visualizar os dados dos leituristas.</p>
+    <div class="lock-error" id="lock-error">PIN incorreto. Tente novamente.</div>
+    <input type="password" id="gestor-pin" maxlength="4" placeholder="••••" inputmode="numeric" onkeydown="if(event.key==='Enter')checkPin()">
+    <button class="lock-btn" onclick="checkPin()">Acessar</button>
+    <button class="lock-cancel" onclick="cancelGestor()">Cancelar</button>
+  </div>
+</div>
+
+<div id="app">
+
+  <!-- TOPBAR -->
+  <div id="topbar">
+    <div id="topbar-inner">
+      <button id="topbar-back" onclick="goBack()">←</button>
+      <span id="topbar-title">Domus Leiturista</span>
+      <span id="topbar-logo">DOMUS</span>
+    </div>
+  </div>
+
+  <!-- CONTENT -->
+  <div id="content">
+
+    <!-- HOME -->
+    <div id="page-home" class="page active">
+      <div class="home-hero">
+        <span class="hero-badge">📱 Guia de Campo</span>
+        <h2>Bem-vindo,<br>Leiturista!</h2>
+        <p>Seu guia completo offline para medição de gás em condomínios.</p>
+      </div>
+
+      <p class="section-label">Ações rápidas</p>
+      <div class="quick-grid">
+        <div class="quick-card orange" onclick="openChecklist('leitura')">
+          <span class="qc-icon">📖</span>
+          <div class="qc-title">Checklist Leitura</div>
+          <div class="qc-sub">Roteiro de medição</div>
+        </div>
+        <div class="quick-card green" onclick="openChecklist('religue')">
+          <span class="qc-icon">🔓</span>
+          <div class="qc-title">Checklist Religue</div>
+          <div class="qc-sub">Religamento de gás</div>
+        </div>
+        <div class="quick-card red" onclick="openChecklist('suspensao')">
+          <span class="qc-icon">🔒</span>
+          <div class="qc-title">Checklist Suspensão</div>
+          <div class="qc-sub">Corte de fornecimento</div>
+        </div>
+        <div class="quick-card blue" onclick="openChecklist('vistoria')">
+          <span class="qc-icon">🔍</span>
+          <div class="qc-title">Checklist Vistoria</div>
+          <div class="qc-sub">Vistoria visual</div>
+        </div>
+      </div>
+
+      <p class="section-label">Regras essenciais</p>
+      <div class="alert-box alert-yellow" style="margin-bottom:10px">
+        <div class="ab-title">⏰ Regra de datas</div>
+        <div class="ab-body">Nunca ultrapassar a data fixa de leitura. Se cair no domingo → antecipar para sábado.</div>
+      </div>
+      <div class="alert-box alert-red" style="margin-bottom:10px">
+        <div class="ab-title">🚫 Prazo máximo</div>
+        <div class="ab-body">Suspensão não pode ultrapassar 30 dias em sistema. Ordens fora do prazo geram multa contratual.</div>
+      </div>
+      <div class="alert-box alert-green">
+        <div class="ab-title">🔥 Segurança</div>
+        <div class="ab-body">Cheiro de gás? Não acione interruptores. Afaste-se e comunique a supervisão imediatamente.</div>
+      </div>
+
+      <div style="height:24px"></div>
+      <p class="section-label">Conta</p>
+      <div id="profile-card" style="background:var(--card);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow);border:1px solid var(--border);margin-bottom:10px">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">
+          <div id="profile-avatar-home" style="width:44px;height:44px;border-radius:50%;background:var(--orange);color:white;font-size:16px;font-weight:700;display:flex;align-items:center;justify-content:center;font-family:var(--mono);flex-shrink:0"></div>
+          <div>
+            <div id="profile-name-home" style="font-size:14px;font-weight:700;color:var(--dark)"></div>
+            <div id="profile-base-home" style="font-size:12px;color:var(--light);margin-top:2px"></div>
+          </div>
+        </div>
+        <button onclick="confirmLogout()" style="width:100%;padding:11px;background:var(--red-bg);border:1px solid #F5B7B1;border-radius:var(--radius-sm);color:var(--red);font-size:13px;font-weight:600;font-family:var(--font);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px">
+          <span>🚪</span> Sair do aplicativo
+        </button>
+      </div>
+      <div style="height:16px"></div>
+    </div>
+
+    <!-- MANUAL -->
+    <div id="page-manual" class="page">
+      <p class="section-label">Capítulos</p>
+      <div class="manual-list">
+        <div class="manual-item" onclick="openDetail('medicao')">
+          <div class="manual-item-icon" style="background:#FFF0E8">⛽</div>
+          <div class="manual-item-text">
+            <div class="manual-item-num">CAPÍTULO 01</div>
+            <div class="manual-item-title">Medição Individual de Gás</div>
+          </div>
+          <span class="manual-item-arrow">›</span>
+        </div>
+        <div class="manual-item" onclick="openDetail('conceitos')">
+          <div class="manual-item-icon" style="background:#E8F0FE">📚</div>
+          <div class="manual-item-text">
+            <div class="manual-item-num">CAPÍTULO 02</div>
+            <div class="manual-item-title">Conceitos Básicos</div>
+          </div>
+          <span class="manual-item-arrow">›</span>
+        </div>
+        <div class="manual-item" onclick="openDetail('funcao')">
+          <div class="manual-item-icon" style="background:#EBF7F0">👷</div>
+          <div class="manual-item-text">
+            <div class="manual-item-num">CAPÍTULO 03</div>
+            <div class="manual-item-title">Função do Leiturista</div>
+          </div>
+          <span class="manual-item-arrow">›</span>
+        </div>
+        <div class="manual-item" onclick="openDetail('leitura')">
+          <div class="manual-item-icon" style="background:#FFF0E8">🔢</div>
+          <div class="manual-item-text">
+            <div class="manual-item-num">CAPÍTULO 04</div>
+            <div class="manual-item-title">Leitura de Medidores</div>
+          </div>
+          <span class="manual-item-arrow">›</span>
+        </div>
+        <div class="manual-item" onclick="openDetail('religue')">
+          <div class="manual-item-icon" style="background:#EBF7F0">🔓</div>
+          <div class="manual-item-text">
+            <div class="manual-item-num">CAPÍTULO 05</div>
+            <div class="manual-item-title">Religue de Gás</div>
+          </div>
+          <span class="manual-item-arrow">›</span>
+        </div>
+        <div class="manual-item" onclick="openDetail('suspensao')">
+          <div class="manual-item-icon" style="background:#FDF0EF">🔒</div>
+          <div class="manual-item-text">
+            <div class="manual-item-num">CAPÍTULO 06</div>
+            <div class="manual-item-title">Suspensão de Gás</div>
+          </div>
+          <span class="manual-item-arrow">›</span>
+        </div>
+        <div class="manual-item" onclick="openDetail('vistoria')">
+          <div class="manual-item-icon" style="background:#E8F0FE">🔍</div>
+          <div class="manual-item-text">
+            <div class="manual-item-num">CAPÍTULO 07</div>
+            <div class="manual-item-title">Vistoria Visual</div>
+          </div>
+          <span class="manual-item-arrow">›</span>
+        </div>
+        <div class="manual-item" onclick="openDetail('inventario')">
+          <div class="manual-item-icon" style="background:#FFF8DC">📊</div>
+          <div class="manual-item-text">
+            <div class="manual-item-num">CAPÍTULO 08</div>
+            <div class="manual-item-title">Vistoria de Inventário</div>
+          </div>
+          <span class="manual-item-arrow">›</span>
+        </div>
+        <div class="manual-item" onclick="openDetail('seguranca')">
+          <div class="manual-item-icon" style="background:#FDF0EF">🛡️</div>
+          <div class="manual-item-text">
+            <div class="manual-item-num">CAPÍTULO 09</div>
+            <div class="manual-item-title">Segurança e Prazos</div>
+          </div>
+          <span class="manual-item-arrow">›</span>
+        </div>
+      </div>
+      <div style="height:16px"></div>
+    </div>
+
+    <!-- DETAIL (hidden, shown over manual) -->
+    <div id="page-detail" class="page" style="padding:0">
+      <div id="detail-content"></div>
+    </div>
+
+    <!-- CHECKLIST -->
+    <div id="page-checklist" class="page">
+
+      <div id="checklist-selector-view">
+        <p class="section-label">Selecione o serviço</p>
+        <div class="checklist-selector">
+          <div class="cl-option" onclick="startChecklist('leitura')">
+            <span class="cl-option-icon">📖</span>
+            <div class="cl-option-text">
+              <div class="cl-option-title">Leitura de Medidores</div>
+              <div class="cl-option-sub">7 etapas • Roteiro completo</div>
+            </div>
+            <span class="cl-option-arrow">›</span>
+          </div>
+          <div class="cl-option" onclick="startChecklist('religue')">
+            <span class="cl-option-icon">🔓</span>
+            <div class="cl-option-text">
+              <div class="cl-option-title">Religue de Gás</div>
+              <div class="cl-option-sub">6 etapas • Reativação</div>
+            </div>
+            <span class="cl-option-arrow">›</span>
+          </div>
+          <div class="cl-option" onclick="startChecklist('suspensao')">
+            <span class="cl-option-icon">🔒</span>
+            <div class="cl-option-text">
+              <div class="cl-option-title">Suspensão de Gás</div>
+              <div class="cl-option-sub">7 etapas • Corte com lacre</div>
+            </div>
+            <span class="cl-option-arrow">›</span>
+          </div>
+          <div class="cl-option" onclick="startChecklist('vistoria')">
+            <span class="cl-option-icon">🔍</span>
+            <div class="cl-option-text">
+              <div class="cl-option-title">Vistoria Visual</div>
+              <div class="cl-option-sub">8 etapas • Identificação de estrutura</div>
+            </div>
+            <span class="cl-option-arrow">›</span>
+          </div>
+          <div class="cl-option" onclick="startChecklist('inventario')">
+            <span class="cl-option-icon">📊</span>
+            <div class="cl-option-text">
+              <div class="cl-option-title">Vistoria de Inventário</div>
+              <div class="cl-option-sub">5 etapas • Nível dos tanques</div>
+            </div>
+            <span class="cl-option-arrow">›</span>
+          </div>
+        </div>
+        <div style="height:16px"></div>
+      </div>
+
+      <div id="active-checklist">
+        <button class="btn-back-cl" onclick="backToSelector()">← Voltar</button>
+        <div id="cl-header"></div>
+        <div class="cl-progress-bar"><div class="cl-progress-fill" id="cl-progress" style="width:0%"></div></div>
+        <div id="cl-items"></div>
+        <div class="cl-done-banner" id="cl-done">
+          <span>🎉</span>
+          <p>Checklist concluído!</p>
+        </div>
+        <button class="cl-reset-btn" onclick="resetChecklist()">↺ Reiniciar checklist</button>
+        <div style="height:16px"></div>
+      </div>
+    </div>
+
+    <!-- GESTOR -->
+    <div id="page-gestor" class="page">
+      <p class="section-label">Resumo geral</p>
+      <div class="gestor-summary" id="gestor-summary"></div>
+      <p class="section-label">Leituristas</p>
+      <div id="gestor-list"></div>
+      <div style="height:16px"></div>
+    </div>
+
+  </div><!-- /content -->
+
+  <!-- BOTTOM NAV -->
+  <div id="bottomnav">
+    <button class="nav-btn active" id="nav-home" onclick="showPage('home')">
+      <span class="nav-icon">🏠</span>
+      <span class="nav-label">Início</span>
+    </button>
+    <button class="nav-btn" id="nav-manual" onclick="showPage('manual')">
+      <span class="nav-icon">📋</span>
+      <span class="nav-label">Manual</span>
+    </button>
+    <button class="nav-btn" id="nav-checklist" onclick="showPage('checklist')">
+      <span class="nav-icon">✅</span>
+      <span class="nav-label">Checklists</span>
+    </button>
+    <button class="nav-btn" id="nav-gestor" onclick="openGestor()">
+      <span class="nav-icon">📊</span>
+      <span class="nav-label">Gestor</span>
+    </button>
+  </div>
+
+</div><!-- /app -->
+
+<div id="offline-badge">📵 Sem internet — funcionando offline</div>
+
+<script>
+// ===================== DATA =====================
+
+const DETAILS = {
+  medicao: {
+    icon: '⛽',
+    title: 'Medição Individual de Gás',
+    subtitle: 'Sistema que registra o consumo de cada unidade separadamente.',
+    sections: [
+      { type: 'body', text: 'Permite que cada usuário pague apenas pelo que consome, garantindo justiça na cobrança e incentivando o consumo responsável.' },
+      { type: 'heading', text: '✅ Benefícios' },
+      { type: 'bullets', items: ['Justiça na cobrança', 'Incentivo ao consumo consciente', 'Redução de desperdícios'] },
+    ]
+  },
+  conceitos: {
+    icon: '📚',
+    title: 'Conceitos Básicos',
+    subtitle: 'Termos fundamentais que você precisa conhecer.',
+    sections: [
+      { type: 'heading', text: '📍 Ponto de consumo' },
+      { type: 'body', text: 'Local onde ocorre o consumo de gás dentro de uma unidade (apartamento, casa ou sala comercial), vinculado diretamente a um medidor.' },
+      { type: 'heading', text: '🔢 Medidor' },
+      { type: 'body', text: 'Equipamento responsável por registrar o volume de gás consumido pela unidade.' },
+      { type: 'heading', text: '🏠 Abrigo' },
+      { type: 'body', text: 'Local onde ficam instalados os medidores de gás do condomínio.' },
+      { type: 'heading', text: '⛽ Central de gás' },
+      { type: 'body', text: 'Local onde estão os tanques de abastecimento geral do condomínio.' },
+    ]
+  },
+  funcao: {
+    icon: '👷',
+    title: 'Função do Leiturista',
+    subtitle: 'Suas responsabilidades e boas práticas no campo.',
+    sections: [
+      { type: 'heading', text: '🎯 Responsabilidades' },
+      { type: 'bullets', items: [
+        'Coletar as leituras dos medidores de gás',
+        'Realizar vistorias',
+        'Executar serviços como suspensão e religue',
+        'Garantir a precisão das informações coletadas',
+      ]},
+      { type: 'heading', text: '✔ Boas Práticas' },
+      { type: 'alert', style: 'green', icon: '✔', title: 'Sempre faça:', body: `
+        <li>Seja cordial e respeitoso com moradores</li>
+        <li>Utilize equipamentos de proteção (EPI)</li>
+        <li>Siga as normas de segurança</li>
+        <li>Garanta precisão nas informações</li>
+        <li>Reporte problemas imediatamente</li>
+      `},
+    ]
+  },
+  leitura: {
+    icon: '🔢',
+    title: 'Leitura de Medidores',
+    subtitle: 'Registro correto do volume de gás consumido.',
+    sections: [
+      { type: 'heading', text: '📝 O que é leitura?' },
+      { type: 'body', text: 'É o registro do número exibido no medidor de gás, que indica o volume consumido pela unidade.' },
+      { type: 'heading', text: '🔧 Como realizar' },
+      { type: 'steps', items: [
+        'Identificar corretamente a unidade',
+        'Localizar o medidor correspondente',
+        'Registrar o número exibido (sem casas decimais, se aplicável)',
+        'Conferir a leitura antes de salvar',
+      ]},
+      { type: 'alert', style: 'yellow', icon: '⚠️', title: 'Cuidados', body: 'Evitar erros de digitação! Confirmar o número do medidor e observar se há irregularidades.' },
+      { type: 'heading', text: '📅 Regras de data' },
+      { type: 'bullets', items: [
+        'Cada condomínio possui data fixa mensal de leitura',
+        'As leituras ocorrem sempre nas mesmas datas todos os meses',
+        'O sistema libera a leitura com até 4 dias de antecedência para adiantamento',
+      ]},
+      { type: 'alert', style: 'red', icon: '🚫', title: 'Restrições obrigatórias', body: `
+        <li>Nunca ultrapassar a data fixa de leitura</li>
+        <li>Se a data fixa cair num domingo → antecipar obrigatoriamente para sábado</li>
+      `},
+    ]
+  },
+  religue: {
+    icon: '🔓',
+    title: 'Religue de Gás',
+    subtitle: 'Restabelecimento do fornecimento para unidades suspensas.',
+    sections: [
+      { type: 'heading', text: '💡 O que é?' },
+      { type: 'body', text: 'É o restabelecimento do fornecimento de gás para uma unidade que estava suspensa, ou a ativação em casos de novo cadastro.' },
+      { type: 'heading', text: '📋 Quando ocorre' },
+      { type: 'bullets', items: [
+        'Após regularização de débitos',
+        'Quando há novo cadastro realizado na unidade',
+        'Mediante solicitação autorizada',
+      ]},
+      { type: 'heading', text: '🔧 Procedimento' },
+      { type: 'steps', items: [
+        'Confirmar autorização do serviço',
+        'Verificar condições de segurança',
+        'Religar a unidade (abrir o registro de gás)',
+        'Testar vazamentos obrigatoriamente com borrifador',
+      ]},
+      { type: 'alert', style: 'green', icon: '✅', title: 'Lembrete importante', body: 'O teste de vazamento com borrifador é OBRIGATÓRIO. Nunca pule esta etapa.' },
+    ]
+  },
+  suspensao: {
+    icon: '🔒',
+    title: 'Suspensão de Gás',
+    subtitle: 'Interrupção segura do fornecimento com lacres.',
+    sections: [
+      { type: 'heading', text: '💡 O que é?' },
+      { type: 'body', text: 'Interrupção do fornecimento de gás para uma unidade, garantindo a segurança da instalação.' },
+      { type: 'heading', text: '📋 Motivos comuns' },
+      { type: 'bullets', items: ['Inadimplência', 'Solicitação do cliente', 'Irregularidades'] },
+      { type: 'heading', text: '🔧 Procedimento' },
+      { type: 'steps', items: [
+        'Confirmar ordem de serviço',
+        'Identificar a unidade correta',
+        'Fechar o registro de gás',
+        'Aplicar os lacres de segurança',
+        'Registrar a execução no sistema',
+      ]},
+      { type: 'heading', text: '🔒 Tipos de lacres' },
+      { type: 'twocol', items: [
+        { icon: '🔵', title: 'Lacre Azul', desc: 'Envolve o registro e impede o religamento.' },
+        { icon: '⚙️', title: 'Lacre de Metal', desc: 'Desconecta o registro da válvula, fecha diretamente no tubo.' },
+      ]},
+      { type: 'alert', style: 'yellow', icon: '⏰', title: 'Prazo para execução', body: `
+        <li>Realizar junto da leitura geral do condomínio</li>
+        <li>Pode ser adiantada</li>
+        <li>Não pode ultrapassar 30 dias em sistema</li>
+      `},
+    ]
+  },
+  vistoria: {
+    icon: '🔍',
+    title: 'Vistoria Visual',
+    subtitle: 'Identificação da estrutura do condomínio e pontos de consumo.',
+    sections: [
+      { type: 'heading', text: '💡 O que é?' },
+      { type: 'body', text: 'Etapa em que o leiturista identifica a estrutura do condomínio e os pontos de consumo, seguindo o padrão estabelecido.' },
+      { type: 'heading', text: '🏢 Estrutura inclui' },
+      { type: 'tags', items: ['Apartamentos', 'Casas', 'Salas comerciais', 'Salão de festa', 'Zeladoria', 'Espaço gourmet', 'Sauna', 'Piscina'] },
+      { type: 'heading', text: '📋 Como funciona' },
+      { type: 'bullets', items: [
+        'Percorrer o condomínio para entender a disposição das unidades e medidores',
+        'Registrar as informações em formulário impresso',
+        'Identificar pontos conforme padrão Ultragaz (placas em acrílico, PVC ou alumínio)',
+      ]},
+      { type: 'heading', text: '⚠️ Irregularidades a sinalizar' },
+      { type: 'bullets', items: [
+        'Ligação direta (sem medidor mensurando consumo)',
+        'Medidor embaçado ou ilegível',
+        'Medidor inacessível',
+      ]},
+      { type: 'heading', text: '📅 Prazos' },
+      { type: 'bullets', items: [
+        'Prazo de execução: até 04 dias após recebimento da solicitação',
+        'Realizar o quanto antes, evitando riscos de atraso',
+        'Entrar em contato com responsável para agendamento',
+        'Se não houver contato → visitar o local',
+      ]},
+      { type: 'alert', style: 'red', icon: '🚫', title: 'Se NÃO houver identificação', body: `
+        <li>NÃO realizar a vistoria</li>
+        <li>Registrar a situação com imagens</li>
+        <li>Reportar à gestão imediatamente</li>
+        <li>Aguardar regularização pelo condomínio/cliente</li>
+      `},
+    ]
+  },
+  inventario: {
+    icon: '📊',
+    title: 'Vistoria de Inventário',
+    subtitle: 'Verificação mensal dos níveis de abastecimento Ultragaz.',
+    sections: [
+      { type: 'heading', text: '💡 O que é?' },
+      { type: 'body', text: 'Atividade solicitada mensalmente pela Ultragaz em condomínios selecionados, para verificação dos níveis de abastecimento dos tanques.' },
+      { type: 'heading', text: '⚙️ Como funciona' },
+      { type: 'bullets', items: [
+        'A Ultragaz define previamente os condomínios selecionados',
+        'O leiturista coleta as porcentagens dos tanques no local',
+      ]},
+      { type: 'alert', style: 'red', icon: '🚫', title: 'Regra obrigatória', body: 'A vistoria de inventário DEVE ser realizada no mesmo dia da leitura do condomínio. Não é permitido realizar em data posterior.' },
+      { type: 'heading', text: '🔧 Procedimento' },
+      { type: 'steps', items: [
+        'Identificar o condomínio na lista de inventário',
+        'Realizar a leitura normalmente',
+        'Coletar as porcentagens dos tanques de gás',
+        'Registrar as informações em formulário específico impresso',
+        'Reportar à gestão conforme orientação',
+      ]},
+    ]
+  },
+  seguranca: {
+    icon: '🛡️',
+    title: 'Segurança e Prazos',
+    subtitle: 'Regras críticas para operar com segurança e conformidade.',
+    sections: [
+      { type: 'heading', text: '🛡️ Segurança' },
+      { type: 'alert', style: 'red', icon: '🚨', title: 'Regras de segurança', body: `
+        <li>Nunca realizar serviços em situação de risco</li>
+        <li>Em caso de cheiro de gás, NÃO acionar interruptores</li>
+        <li>Afaste-se e comunique imediatamente a supervisão</li>
+      `},
+      { type: 'heading', text: '⏰ Atenção aos Prazos' },
+      { type: 'body', text: 'O cumprimento dos prazos é um dos pontos mais críticos da operação.' },
+      { type: 'alert', style: 'yellow', icon: '⚠️', title: 'Consequências do atraso', body: 'Ordens de serviço executadas fora do prazo estão sujeitas a penalidades e multas contratuais, impactando diretamente o faturamento da Domus Soluções.' },
+      { type: 'alert', style: 'green', icon: '🏆', title: 'Por que os prazos importam', body: 'O respeito aos prazos contribui diretamente para o crescimento, a credibilidade e o desenvolvimento contínuo da empresa.' },
+    ]
+  }
+};
+
+const CHECKLISTS = {
+  leitura: {
+    title: 'Leitura de Medidores',
+    icon: '📖',
+    items: [
+      { section: 'Preparação', text: 'Confirmar data: verificar se está dentro da janela de leitura (até 4 dias antes)', note: 'Sistema libera 4 dias antes da data fixa' },
+      { section: 'Preparação', text: 'Verificar rota e lista de unidades a serem lidas', note: null },
+      { section: 'Em campo', text: 'Identificar corretamente a unidade antes de iniciar', note: 'Conferir número da unidade no medidor' },
+      { section: 'Em campo', text: 'Localizar o medidor no abrigo correspondente', note: null },
+      { section: 'Em campo', text: 'Registrar o número exibido no medidor (sem casas decimais, se aplicável)', note: 'Atenção para não inverter dígitos' },
+      { section: 'Em campo', text: 'Conferir a leitura antes de salvar', note: 'Verificar se é compatível com consumo do mês anterior' },
+      { section: 'Finalização', text: 'Observar e reportar irregularidades (medidor embaçado, inacessível, ligação direta)', note: null },
+    ]
+  },
+  religue: {
+    title: 'Religue de Gás',
+    icon: '🔓',
+    items: [
+      { section: 'Verificação', text: 'Confirmar a autorização do serviço', note: 'Deve haver ordem de serviço aprovada' },
+      { section: 'Verificação', text: 'Identificar corretamente a unidade a ser religada', note: null },
+      { section: 'Verificação', text: 'Verificar condições de segurança antes de iniciar', note: 'Nenhum vazamento visível ou odor de gás' },
+      { section: 'Execução', text: 'Retirar o lacre de segurança existente', note: null },
+      { section: 'Execução', text: 'Religar a unidade abrindo o registro de gás', note: null },
+      { section: 'Teste', text: 'Testar vazamentos OBRIGATORIAMENTE com borrifador', note: 'Sem espuma = sem vazamento. Esta etapa é obrigatória.' },
+    ]
+  },
+  suspensao: {
+    title: 'Suspensão de Gás',
+    icon: '🔒',
+    items: [
+      { section: 'Verificação', text: 'Confirmar a ordem de serviço de suspensão', note: 'Verificar motivo: inadimplência, solicitação ou irregularidade' },
+      { section: 'Verificação', text: 'Identificar a unidade correta', note: 'Confirmar número da unidade antes de agir' },
+      { section: 'Execução', text: 'Fechar o registro de gás da unidade', note: null },
+      { section: 'Execução', text: 'Aplicar o lacre de segurança adequado', note: 'Lacre azul: envolve o registro / Lacre metal: diretamente no tubo' },
+      { section: 'Execução', text: 'Verificar que o fechamento está garantindo interrupção total', note: null },
+      { section: 'Finalização', text: 'Registrar a execução no sistema', note: null },
+      { section: 'Finalização', text: 'Confirmar prazo: a suspensão não pode ultrapassar 30 dias em sistema', note: null },
+    ]
+  },
+  vistoria: {
+    title: 'Vistoria Visual',
+    icon: '🔍',
+    items: [
+      { section: 'Pré-vistoria', text: 'Verificar se os pontos de consumo já estão identificados (sinalização nas unidades)', note: 'Se NÃO houver identificação: NÃO realizar, registrar com fotos e reportar à gestão' },
+      { section: 'Pré-vistoria', text: 'Confirmar contato responsável e agendar vistoria', note: 'Prazo máximo: 04 dias após recebimento da solicitação' },
+      { section: 'Em campo', text: 'Percorrer o condomínio para identificar disposição das unidades e medidores', note: null },
+      { section: 'Em campo', text: 'Registrar todas as unidades com ponto de consumo no formulário impresso', note: 'Aptos, casas, salas, salão, zeladoria, gourmet, sauna, piscina etc.' },
+      { section: 'Em campo', text: 'Identificar pontos conforme padrão Ultragaz (placas em acrílico, PVC ou alumínio)', note: null },
+      { section: 'Irregularidades', text: 'Verificar e sinalizar: ligação direta (conectado direto sem medidor)', note: null },
+      { section: 'Irregularidades', text: 'Verificar e sinalizar: medidor embaçado, ilegível ou inacessível', note: null },
+      { section: 'Finalização', text: 'Preencher corretamente todo o formulário impresso e reportar', note: null },
+    ]
+  },
+  inventario: {
+    title: 'Vistoria de Inventário',
+    icon: '📊',
+    items: [
+      { section: 'Verificação', text: 'Identificar o condomínio na lista de inventário do mês', note: 'Lista enviada pela Ultragaz' },
+      { section: 'Execução', text: 'Realizar a leitura dos medidores normalmente', note: 'A vistoria de inventário DEVE ser feita no mesmo dia da leitura' },
+      { section: 'Execução', text: 'Coletar as porcentagens de todos os tanques de gás', note: 'Anotar cada tanque individualmente' },
+      { section: 'Finalização', text: 'Registrar as informações em formulário específico impresso', note: null },
+      { section: 'Finalização', text: 'Reportar à gestão conforme orientação recebida', note: null },
+    ]
+  },
+};
+
+// ===================== STATE =====================
+let currentPage = 'home';
+let currentDetail = null;
+let currentChecklist = null;
+let checklistState = {};
+let userProfile = null;
+let gestorUnlocked = false;
+const GESTOR_PIN = '1234'; // PIN padrão — altere conforme necessário
+
+const CL_ICONS = { leitura: '📖', religue: '🔓', suspensao: '🔒', vistoria: '🔍', inventario: '📊' };
+const CL_NAMES = { leitura: 'Leitura', religue: 'Religue', suspensao: 'Suspensão', vistoria: 'Vistoria Visual', inventario: 'Inventário' };
+
+// Load saved state
+try {
+  const saved = localStorage.getItem('cl_state');
+  if (saved) checklistState = JSON.parse(saved);
+} catch(e) {}
+
+try {
+  const p = localStorage.getItem('user_profile');
+  if (p) userProfile = JSON.parse(p);
+} catch(e) {}
+
+function saveState() {
+  try { localStorage.setItem('cl_state', JSON.stringify(checklistState)); } catch(e) {}
+}
+
+// ===================== PROFILE / ONBOARDING =====================
+function saveProfile() {
+  const nome = document.getElementById('onb-nome').value.trim();
+  const base = document.getElementById('onb-base').value.trim();
+  if (!nome || !base) { alert('Preencha seu nome e a base prestadora.'); return; }
+  userProfile = { nome, base, since: new Date().toISOString() };
+  try { localStorage.setItem('user_profile', JSON.stringify(userProfile)); } catch(e) {}
+  document.getElementById('onboarding').classList.add('hidden');
+  initApp();
+}
+
+function initApp() {
+  if (!userProfile) return;
+  const initials = userProfile.nome.split(' ').map(w => w[0]).join('').slice(0,2).toUpperCase();
+
+  // Profile chip in topbar
+  document.getElementById('topbar-logo').innerHTML = `
+    <div class="profile-chip" onclick="showEditProfile()">
+      <div class="profile-chip-avatar">${initials}</div>
+      <span class="profile-chip-name">${userProfile.nome.split(' ')[0]}</span>
+    </div>`;
+
+  // Home hero greeting
+  const hero = document.querySelector('.home-hero h2');
+  if (hero) hero.textContent = `Olá, ${userProfile.nome.split(' ')[0]}!`;
+
+  // Home profile card
+  const avatarEl = document.getElementById('profile-avatar-home');
+  const nameEl = document.getElementById('profile-name-home');
+  const baseEl = document.getElementById('profile-base-home');
+  if (avatarEl) avatarEl.textContent = initials;
+  if (nameEl) nameEl.textContent = userProfile.nome;
+  if (baseEl) baseEl.textContent = '📍 ' + userProfile.base;
+}
+
+function showEditProfile() {
+  if (confirm(`Trocar de leiturista?\nAtual: ${userProfile.nome} — ${userProfile.base}`)) {
+    localStorage.removeItem('user_profile');
+    location.reload();
+  }
+}
+
+function confirmLogout() {
+  if (confirm('Deseja sair do aplicativo?\nSeu histórico será mantido.')) {
+    localStorage.removeItem('user_profile');
+    location.reload();
+  }
+}
+
+// ===================== GESTOR =====================
+function openGestor() {
+  if (gestorUnlocked) {
+    showPage('gestor');
+    renderGestor();
+  } else {
+    document.getElementById('gestor-lock').classList.remove('hidden');
+    document.getElementById('gestor-pin').value = '';
+    document.getElementById('lock-error').classList.remove('show');
+    setTimeout(() => document.getElementById('gestor-pin').focus(), 100);
+  }
+}
+
+function checkPin() {
+  const pin = document.getElementById('gestor-pin').value;
+  if (pin === GESTOR_PIN) {
+    gestorUnlocked = true;
+    document.getElementById('gestor-lock').classList.add('hidden');
+    showPage('gestor');
+    renderGestor();
+  } else {
+    document.getElementById('lock-error').classList.add('show');
+    document.getElementById('gestor-pin').value = '';
+  }
+}
+
+function cancelGestor() {
+  document.getElementById('gestor-lock').classList.add('hidden');
+}
+
+function logoutGestor() {
+  gestorUnlocked = false;
+  showPage('home');
+}
+
+function renderGestor() {
+  document.getElementById('topbar-title').textContent = 'Painel do Gestor';
+
+  // Botão sair do gestor no topbar-logo
+  document.getElementById('topbar-logo').innerHTML = `
+    <button onclick="logoutGestor()" style="background:rgba(255,255,255,0.2);border:none;border-radius:8px;color:white;font-size:12px;font-weight:600;font-family:var(--font);padding:5px 10px;cursor:pointer">
+      🔒 Sair
+    </button>`;
+
+  // Load all history
+  let allHistory = [];
+  try { allHistory = JSON.parse(localStorage.getItem('cl_history') || '[]'); } catch(e) {}
+
+  // Group by leiturista
+  const byLeiturista = {};
+  allHistory.forEach(entry => {
+    const key = entry.nome + '|' + entry.base;
+    if (!byLeiturista[key]) byLeiturista[key] = { nome: entry.nome, base: entry.base, entries: [] };
+    byLeiturista[key].entries.push(entry);
+  });
+
+  const leituristas = Object.values(byLeiturista);
+  const totalChecklists = allHistory.length;
+  const totalLeituristas = leituristas.length;
+  const thisMonth = allHistory.filter(e => new Date(e.date).getMonth() === new Date().getMonth()).length;
+
+  // Summary
+  document.getElementById('gestor-summary').innerHTML = `
+    <div class="stat-card"><div class="stat-num">${totalLeituristas}</div><div class="stat-label">Leituristas</div></div>
+    <div class="stat-card"><div class="stat-num">${totalChecklists}</div><div class="stat-label">Total concluídos</div></div>
+    <div class="stat-card"><div class="stat-num">${thisMonth}</div><div class="stat-label">Este mês</div></div>
+    <div class="stat-card"><div class="stat-num">${leituristas.length > 0 ? Math.round(totalChecklists / leituristas.length) : 0}</div><div class="stat-label">Média por leiturista</div></div>
+  `;
+
+  if (leituristas.length === 0) {
+    document.getElementById('gestor-list').innerHTML = `
+      <div class="no-data"><span>📭</span>Nenhum checklist concluído ainda.<br>Os dados aparecem aqui assim que os leituristas completarem checklists.</div>`;
+    return;
+  }
+
+  let html = '';
+  leituristas.forEach((l, idx) => {
+    const initials = l.nome.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
+    const byType = {};
+    l.entries.forEach(e => { byType[e.type] = (byType[e.type] || 0) + 1; });
+    const total = l.entries.length;
+    const thisMonthCount = l.entries.filter(e => new Date(e.date).getMonth() === new Date().getMonth()).length;
+    const lastEntry = l.entries[l.entries.length - 1];
+    const lastDate = lastEntry ? new Date(lastEntry.date).toLocaleDateString('pt-BR') : '-';
+
+    const historyRows = l.entries.slice().reverse().slice(0, 10).map(e => `
+      <div class="history-item">
+        <span class="history-icon">${CL_ICONS[e.type] || '✅'}</span>
+        <span class="history-text">${CL_NAMES[e.type] || e.type}</span>
+        <span class="history-date">${new Date(e.date).toLocaleDateString('pt-BR', {day:'2-digit',month:'2-digit'})} ${new Date(e.date).toLocaleTimeString('pt-BR', {hour:'2-digit',minute:'2-digit'})}</span>
+      </div>`).join('');
+
+    html += `
+    <div class="leiturista-card">
+      <div class="lc-header" onclick="toggleHistory(${idx})">
+        <div class="lc-avatar">${initials}</div>
+        <div class="lc-info">
+          <div class="lc-name">${l.nome}</div>
+          <div class="lc-base">📍 ${l.base}</div>
+        </div>
+        <span class="lc-toggle" id="toggle-icon-${idx}">▼</span>
+      </div>
+      <div class="lc-stats">
+        <div class="lc-stat"><div class="lc-stat-num">${total}</div><div class="lc-stat-label">Total</div></div>
+        <div class="lc-stat"><div class="lc-stat-num">${thisMonthCount}</div><div class="lc-stat-label">Este mês</div></div>
+        <div class="lc-stat"><div class="lc-stat-num">${lastDate}</div><div class="lc-stat-label">Último</div></div>
+      </div>
+      <div class="lc-history" id="history-${idx}">
+        <div class="lc-history-title">Últimos checklists</div>
+        ${historyRows || '<div style="color:var(--light);font-size:12px">Nenhum registro ainda.</div>'}
+      </div>
+    </div>`;
+  });
+  document.getElementById('gestor-list').innerHTML = html;
+}
+
+function toggleHistory(idx) {
+  const el = document.getElementById('history-' + idx);
+  const icon = document.getElementById('toggle-icon-' + idx);
+  el.classList.toggle('open');
+  icon.textContent = el.classList.contains('open') ? '▲' : '▼';
+}
+
+// ===================== TRACK COMPLETION =====================
+function trackCompletion(type) {
+  if (!userProfile) return;
+  let history = [];
+  try { history = JSON.parse(localStorage.getItem('cl_history') || '[]'); } catch(e) {}
+  history.push({
+    nome: userProfile.nome,
+    base: userProfile.base,
+    type,
+    date: new Date().toISOString()
+  });
+  try { localStorage.setItem('cl_history', JSON.stringify(history)); } catch(e) {}
+}
+
+// ===================== NAVIGATION =====================
+function showPage(page) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+
+  document.getElementById('page-' + page).classList.add('active');
+  const navBtn = document.getElementById('nav-' + page);
+  if (navBtn) navBtn.classList.add('active');
+
+  const backBtn = document.getElementById('topbar-back');
+  backBtn.classList.remove('show');
+
+  const titles = { home: 'Domus Leiturista', manual: 'Manual', checklist: 'Checklists', detail: '', gestor: 'Painel do Gestor' };
+  document.getElementById('topbar-title').textContent = titles[page] || 'Domus Leiturista';
+
+  // Restore profile chip
+  if (userProfile && page !== 'gestor') {
+    const initials = userProfile.nome.split(' ').map(w => w[0]).join('').slice(0,2).toUpperCase();
+    document.getElementById('topbar-logo').innerHTML = `
+      <div class="profile-chip" onclick="showEditProfile()">
+        <div class="profile-chip-avatar">${initials}</div>
+        <span class="profile-chip-name">${userProfile.nome.split(' ')[0]}</span>
+      </div>`;
+  } else if (page === 'gestor') {
+    document.getElementById('topbar-logo').innerHTML = `<span style="font-family:var(--mono);font-size:11px;color:rgba(255,255,255,0.7);letter-spacing:1px">GESTOR</span>`;
+  }
+
+  currentPage = page;
+  document.getElementById('content').scrollTop = 0;
+}
+
+function openDetail(key) {
+  currentDetail = key;
+  const data = DETAILS[key];
+  if (!data) return;
+
+  document.getElementById('detail-content').innerHTML = buildDetail(data);
+  document.getElementById('detail-content').classList.add('fade-in');
+  setTimeout(() => document.getElementById('detail-content').classList.remove('fade-in'), 400);
+
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-detail').classList.add('active');
+
+  document.getElementById('topbar-title').textContent = data.title;
+  document.getElementById('topbar-back').classList.add('show');
+  document.getElementById('content').scrollTop = 0;
+}
+
+function goBack() {
+  if (currentDetail) {
+    currentDetail = null;
+    showPage('manual');
+  }
+}
+
+function openChecklist(type) {
+  showPage('checklist');
+  startChecklist(type);
+}
+
+// ===================== DETAIL BUILDER =====================
+function buildDetail(data) {
+  let html = `
+    <div class="detail-header">
+      <span class="detail-header-icon">${data.icon}</span>
+      <h2>${data.title}</h2>
+      <p>${data.subtitle}</p>
+    </div>
+    <div id="detail-content-inner" style="padding:16px">
+  `;
+
+  data.sections.forEach(s => {
+    if (s.type === 'heading') {
+      html += `<div class="content-block"><h3>${s.text}</h3>`;
+    } else if (s.type === 'body') {
+      html += `<div class="info-card" style="margin-bottom:12px">${s.text}</div>`;
+    } else if (s.type === 'bullets') {
+      html += `<div class="bullet-list">`;
+      s.items.forEach(item => {
+        html += `<div class="bullet-item"><div class="bi-dot"></div><span>${item}</span></div>`;
+      });
+      html += `</div>`;
+    } else if (s.type === 'steps') {
+      html += `<div class="step-list">`;
+      s.items.forEach((item, i) => {
+        html += `<div class="step-item"><div class="step-num">${i+1}</div><div class="step-text">${item}</div></div>`;
+      });
+      html += `</div>`;
+    } else if (s.type === 'alert') {
+      html += `<div class="alert-box alert-${s.style}"><div class="ab-title">${s.icon} ${s.title}</div><div class="ab-body"><ul style="padding-left:4px;list-style:none">${s.body}</ul></div></div>`;
+    } else if (s.type === 'tags') {
+      html += `<div class="tag-row" style="margin-bottom:12px">`;
+      s.items.forEach(t => html += `<span class="tag">${t}</span>`);
+      html += `</div>`;
+    } else if (s.type === 'twocol') {
+      html += `<div class="two-col" style="margin-bottom:12px">`;
+      s.items.forEach(it => {
+        html += `<div class="mini-card"><div class="mc-icon">${it.icon}</div><div class="mc-title">${it.title}</div><div class="mc-desc">${it.desc}</div></div>`;
+      });
+      html += `</div>`;
+    }
+
+    if (s.type === 'heading') html += `</div>`;
+  });
+
+  html += `<div style="height:16px"></div></div>`;
+  return html;
+}
+
+// ===================== CHECKLIST =====================
+function startChecklist(type) {
+  currentChecklist = type;
+  const data = CHECKLISTS[type];
+  if (!data) return;
+
+  document.getElementById('checklist-selector-view').classList.add('hide');
+  document.getElementById('active-checklist').classList.add('show');
+
+  if (!checklistState[type]) {
+    checklistState[type] = new Array(data.items.length).fill(false);
+  }
+
+  renderChecklist();
+
+  document.getElementById('topbar-title').textContent = data.title;
+  document.getElementById('topbar-back').classList.remove('show');
+  document.getElementById('content').scrollTop = 0;
+}
+
+function renderChecklist() {
+  const type = currentChecklist;
+  const data = CHECKLISTS[type];
+  const state = checklistState[type];
+
+  // Header
+  document.getElementById('cl-header').innerHTML = `
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+      <span style="font-size:28px">${data.icon}</span>
+      <div>
+        <div style="font-size:16px;font-weight:700;color:var(--dark)">${data.title}</div>
+        <div style="font-size:12px;color:var(--light)">${state.filter(Boolean).length} de ${data.items.length} concluídos</div>
+      </div>
+    </div>
+  `;
+
+  // Progress
+  const pct = data.items.length > 0 ? (state.filter(Boolean).length / data.items.length) * 100 : 0;
+  document.getElementById('cl-progress').style.width = pct + '%';
+
+  // Items grouped by section
+  let html = '';
+  let lastSection = null;
+  data.items.forEach((item, i) => {
+    if (item.section !== lastSection) {
+      html += `<div class="cl-section-title">${item.section}</div>`;
+      lastSection = item.section;
+    }
+    const checked = state[i];
+    html += `
+      <div class="cl-item ${checked ? 'checked' : ''}" onclick="toggleItem(${i})">
+        <div class="cl-checkbox">${checked ? '✓' : ''}</div>
+        <div class="cl-text">
+          <div class="cl-title">${item.text}</div>
+          ${item.note ? `<div class="cl-note">💡 ${item.note}</div>` : ''}
+        </div>
+      </div>
+    `;
+  });
+  document.getElementById('cl-items').innerHTML = html;
+
+  // Done banner
+  const allDone = state.every(Boolean);
+  const doneBanner = document.getElementById('cl-done');
+  if (allDone) doneBanner.classList.add('show');
+  else doneBanner.classList.remove('show');
+}
+
+function toggleItem(index) {
+  const type = currentChecklist;
+  const wasAllDone = checklistState[type].every(Boolean);
+  checklistState[type][index] = !checklistState[type][index];
+  saveState();
+  const isNowAllDone = checklistState[type].every(Boolean);
+  if (!wasAllDone && isNowAllDone) {
+    trackCompletion(type);
+  }
+  renderChecklist();
+}
+
+function resetChecklist() {
+  const type = currentChecklist;
+  checklistState[type] = new Array(CHECKLISTS[type].items.length).fill(false);
+  saveState();
+  renderChecklist();
+}
+
+function backToSelector() {
+  currentChecklist = null;
+  document.getElementById('checklist-selector-view').classList.remove('hide');
+  document.getElementById('active-checklist').classList.remove('show');
+  document.getElementById('topbar-title').textContent = 'Checklists';
+  document.getElementById('active-checklist').classList.remove('show');
+}
+
+// ===================== OFFLINE =====================
+window.addEventListener('online', () => document.getElementById('offline-badge').classList.remove('show'));
+window.addEventListener('offline', () => document.getElementById('offline-badge').classList.add('show'));
+if (!navigator.onLine) document.getElementById('offline-badge').classList.add('show');
+
+// ===================== SERVICE WORKER =====================
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('sw.js').catch(() => {});
+}
+
+// ===================== INIT =====================
+if (userProfile) {
+  document.getElementById('onboarding').classList.add('hidden');
+  initApp();
+}
+</script>
+</body>
+</html>

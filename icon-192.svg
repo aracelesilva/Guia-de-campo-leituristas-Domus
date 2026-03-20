@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192" width="192" height="192">
+  <!-- Fundo laranja -->
+  <rect width="192" height="192" rx="38" fill="#E8560A"/>
+  <!-- Quadrado azul ciano com cantos arredondados -->
+  <rect x="34" y="34" width="124" height="124" rx="22" fill="#00BFFF"/>
+  <!-- Sombra sutil interna -->
+  <rect x="34" y="34" width="124" height="124" rx="22" fill="url(#shadow)" opacity="0.15"/>
+  <defs>
+    <linearGradient id="shadow" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="white"/>
+      <stop offset="100%" stop-color="black"/>
+    </linearGradient>
+  </defs>
+  <!-- Letra D branca -->
+  <text x="96" y="128" font-size="105" font-weight="bold" text-anchor="middle" font-family="Arial Black, Arial" fill="white">D</text>
+</svg>
