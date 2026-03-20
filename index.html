@@ -940,6 +940,26 @@
       <div style="height:16px"></div>
     </div>
 
+    <!-- OFS -->
+    <div id="page-ofs" class="page" style="padding:0">
+      <div id="ofs-list-view">
+        <div style="padding:16px">
+          <div style="background:linear-gradient(135deg,#1565C0,#0D47A1);border-radius:var(--radius);padding:20px;margin-bottom:16px;position:relative;overflow:hidden">
+            <div style="position:absolute;top:-20px;right:-20px;width:100px;height:100px;border-radius:50%;background:rgba(255,255,255,0.07)"></div>
+            <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,0.7);margin-bottom:6px">Oracle Field Service</div>
+            <div style="font-size:20px;font-weight:700;color:white;margin-bottom:6px">Treinamento OFS</div>
+            <div style="font-size:13px;color:rgba(255,255,255,0.8);line-height:1.5">Guia completo de uso do sistema Oracle Field Service para leituristas.</div>
+          </div>
+          <p class="section-label">Módulos</p>
+          <div class="manual-list" id="ofs-modules-list"></div>
+          <div style="height:16px"></div>
+        </div>
+      </div>
+      <div id="ofs-detail-view" style="display:none">
+        <div id="ofs-detail-content"></div>
+      </div>
+    </div>
+
   </div><!-- /content -->
 
   <!-- BOTTOM NAV -->
@@ -951,6 +971,10 @@
     <button class="nav-btn" id="nav-manual" onclick="showPage('manual')">
       <span class="nav-icon">📋</span>
       <span class="nav-label">Manual</span>
+    </button>
+    <button class="nav-btn" id="nav-ofs" onclick="showPage('ofs')">
+      <span class="nav-icon">⚙️</span>
+      <span class="nav-label">OFS</span>
     </button>
     <button class="nav-btn" id="nav-checklist" onclick="showPage('checklist')">
       <span class="nav-icon">✅</span>
@@ -1465,7 +1489,7 @@ function showPage(page) {
   const backBtn = document.getElementById('topbar-back');
   backBtn.classList.remove('show');
 
-  const titles = { home: 'Domus Leiturista', manual: 'Manual', checklist: 'Checklists', detail: '', gestor: 'Painel do Gestor' };
+  const titles = { home: 'Domus Leiturista', manual: 'Manual', checklist: 'Checklists', detail: '', gestor: 'Painel do Gestor', ofs: 'Treinamento OFS' };
   document.getElementById('topbar-title').textContent = titles[page] || 'Domus Leiturista';
 
   // Restore profile chip
@@ -1482,6 +1506,7 @@ function showPage(page) {
 
   currentPage = page;
   document.getElementById('content').scrollTop = 0;
+  if (page === 'ofs') { initOFS(); }
 }
 
 function openDetail(key) {
@@ -1505,6 +1530,8 @@ function goBack() {
   if (currentDetail) {
     currentDetail = null;
     showPage('manual');
+  } else if (currentPage === 'ofs') {
+    backFromOFS();
   }
 }
 
@@ -1657,7 +1684,342 @@ function backToSelector() {
   document.getElementById('active-checklist').classList.remove('show');
 }
 
-// ===================== OFFLINE =====================
+// ===================== OFS DATA =====================
+const OFS_MODULES = [
+  {
+    id: 'instalacao',
+    icon: '📲',
+    color: '#E3F2FD',
+    num: '01',
+    title: 'Instalação do App',
+    subtitle: 'Baixar e configurar o Oracle Field Service',
+    sections: [
+      { type: 'heading', text: '📲 Como instalar' },
+      { type: 'steps', items: [
+        'Abrir a Play Store no celular Android',
+        'No campo de busca, digitar "Oracle Field Service"',
+        'Localizar o app e clicar em "Instalar"',
+        'Após instalar, aceitar os termos da licença do usuário final',
+        'Ao abrir o app, informar o nome do ambiente: https://ultragazmicloud.fs.ocs.oraclecloud.com',
+        'Clicar em "Próxima" para ter acesso ao app',
+        'Ao abrir, permitir "Localização sempre" para iniciar os atendimentos',
+      ]},
+      { type: 'alert', style: 'blue', icon: '💡', title: 'Login e senha', body: 'Todos os usuários serão cadastrados pelo gestor da Ultragaz. O prestador não cria usuários — o acesso é apenas para editar campos como alterar senha.' },
+    ]
+  },
+  {
+    id: 'navegacao',
+    icon: '🗺️',
+    color: '#E8F5E9',
+    num: '02',
+    title: 'Navegação e Funcionalidades',
+    subtitle: 'Interface e como navegar no app em campo',
+    sections: [
+      { type: 'heading', text: '🏠 Tela inicial' },
+      { type: 'bullets', items: [
+        'Tela inicial exibe todos os condomínios em rota',
+        'Campo "Atividades": lista todas as atividades em rota, pendentes e fechadas',
+        'Campo "Minha Rota": exibe o mapa com a rota de todos os condomínios',
+        'Calendário: permite acessar dias anteriores (rota congelada) para análise',
+      ]},
+      { type: 'heading', text: '▶️ Iniciando atendimento' },
+      { type: 'steps', items: [
+        'Clicar em "Ativar Rota" na tela inicial',
+        'No canto superior direito: ícone de Consulta (buscar condomínio) e Chat',
+        'Consultar por condomínio, endereço, CEP ou ID da atividade',
+        'Clicar em "Iniciar" para acessar as OSs disponíveis',
+        'Validar informações do responsável pelo acesso',
+        'Clicar em "Obter Geolocalização" — OBRIGATÓRIO para acessar as OSs',
+        'Clicar em "Enviar" para confirmar',
+      ]},
+      { type: 'alert', style: 'red', icon: '🚫', title: 'Atenção obrigatória', body: 'Sempre clicar em "Obter Geolocalização" antes de iniciar os atendimentos. Sem isso, as OSs não ficam acessíveis.' },
+      { type: 'heading', text: '📦 Executando OSs' },
+      { type: 'steps', items: [
+        'Após geolocalização, acessar "Ordens de Serviço"',
+        'Clicar em "Carregar" para ver data, quantidade por bloco e OSs emergenciais',
+        'Clicar no ícone da OS para ver informações do cliente (morador)',
+        'Após finalizar todas as OSs do bloco, clicar no X para terminar o pacote',
+        'Todos os pacotes precisam ser finalizados para envio à Ultragaz',
+      ]},
+      { type: 'heading', text: '✅ Finalizando o condomínio' },
+      { type: 'steps', items: [
+        'Clicar em "Terminar" para finalizar o pacote',
+        'Selecionar ocorrência e informar observação',
+        'Clicar em "Enviar" para concluir',
+        'Opcional: escolher próxima atividade antes de enviar',
+      ]},
+      { type: 'alert', style: 'yellow', icon: '⚠️', title: 'Para enviar ao CCS', body: 'Para as OSs voltarem ao CCS (sistema de faturamento da Ultragaz) e ter tratativa pelo WF, é obrigatório apontar uma ocorrência nas unidades consumidoras.' },
+    ]
+  },
+  {
+    id: 'ocorrencia',
+    icon: '📋',
+    color: '#FFF8E1',
+    num: '03',
+    title: 'Ocorrência Massiva',
+    subtitle: 'Finalizar pacote completo com a mesma ocorrência',
+    sections: [
+      { type: 'heading', text: '💡 O que é?' },
+      { type: 'body', text: 'Funcionalidade que permite finalizar o pacote 100% com a mesma ocorrência. Útil quando, por exemplo, o condomínio não tem responsável para atendimento.' },
+      { type: 'heading', text: '🔧 Como usar' },
+      { type: 'steps', items: [
+        'Selecionar "Ocorrência em Massa" na tela de finalização',
+        'Escolher a ocorrência desejada (disponível apenas para algumas ocorrências)',
+        'Informar uma observação',
+        'Clicar em "Aplicar" para apontar a ocorrência em todas as unidades do condomínio',
+        'Clicar no X para terminar o pacote',
+      ]},
+      { type: 'alert', style: 'yellow', icon: '⚠️', title: 'Atenção', body: 'Esta funcionalidade só está disponível para algumas ocorrências específicas. Verifique se a ocorrência desejada permite o uso em massa.' },
+    ]
+  },
+  {
+    id: 'reagendamento',
+    icon: '📅',
+    color: '#F3E5F5',
+    num: '04',
+    title: 'Reagendamento de Atividades',
+    subtitle: 'Reagendar OSs de forma automática',
+    sections: [
+      { type: 'heading', text: '💡 O que é?' },
+      { type: 'body', text: 'Funcionalidade que permite reagendar as OSs de forma automática, escolhendo o dia e período mais adequados.' },
+      { type: 'heading', text: '🔧 Como reagendar' },
+      { type: 'steps', items: [
+        'Clicar em "Carregar" na tela de atividades',
+        'Habilitar o campo "Reagendar"',
+        'Selecionar o melhor dia e período no calendário que abrirá',
+        'Apontar uma ocorrência e observação',
+        'Clicar em "Enviar" para concluir o reagendamento',
+      ]},
+      { type: 'alert', style: 'red', icon: '🚫', title: 'Restrições importantes', body: 'O app só permite reagendar atividades dentro do prazo definido pelo SLA. Atividades com prazo vencido não podem ser reagendadas. Esta funcionalidade é apenas para OS única — não é possível reagendar o condomínio por completo.' },
+    ]
+  },
+  {
+    id: 'chat',
+    icon: '💬',
+    color: '#E8F5E9',
+    num: '05',
+    title: 'Comunicação via Chat',
+    subtitle: 'Canal de comunicação em tempo real',
+    sections: [
+      { type: 'heading', text: '💡 O que é?' },
+      { type: 'body', text: 'Canal de chat integrado ao app para comunicação em tempo real entre os usuários envolvidos nas atividades.' },
+      { type: 'heading', text: '🔧 Como usar' },
+      { type: 'steps', items: [
+        'No canto superior direito da tela inicial, tocar no ícone de Chat (2º ícone)',
+        'Acessar mensagens recebidas e histórico completo',
+        'Falar diretamente com o suporte',
+        'Realizar chamada de vídeo se necessário',
+        'Convidar outros usuários para conversa',
+        'Nos 3 pontinhos: acessar histórico e enviar mensagem em grupo',
+      ]},
+      { type: 'alert', style: 'blue', icon: '💡', title: 'Contatos e grupos', body: 'Os contatos e grupos de pessoas serão criados pela Ultragaz, conforme alinhamento prévio com todos os prestadores.' },
+    ]
+  },
+  {
+    id: 'leitura-inicial',
+    icon: '🔢',
+    color: '#FFF0E8',
+    num: '06',
+    title: 'Leitura Inicial',
+    subtitle: 'Primeira leitura após estabelecimento de UC',
+    sections: [
+      { type: 'heading', text: '💡 O que é?' },
+      { type: 'body', text: 'Atividade gerada após a criação da estrutura pela atividade "Estabelecer UCs" no processo de habilitação. No app aparece como "Leitura" — o que a diferencia da Leitura Individual é o campo abaixo do medidor.' },
+      { type: 'heading', text: '🔧 Como executar' },
+      { type: 'steps', items: [
+        'Na tela da atividade, tocar no ícone para acessar o telefone do cliente',
+        'Informar o número do medidor — padrão: apenas os 4 últimos números (não considerar letras)',
+        'Informar a leitura inicial — campo com máscara para 3 dígitos após a vírgula',
+        'Selecionar ocorrência e informar observação',
+        'Adicionar foto — OBRIGATÓRIA nesta atividade',
+        'Clicar em "Enviar"',
+        'Após concluir todas as OSs dos blocos, clicar no X para terminar o pacote',
+      ]},
+      { type: 'alert', style: 'red', icon: '📸', title: 'Foto obrigatória', body: 'Na Leitura Inicial a foto é obrigatória. Não é possível enviar a OS sem a foto do medidor.' },
+    ]
+  },
+  {
+    id: 'leitura-individual',
+    icon: '📖',
+    color: '#FFF0E8',
+    num: '07',
+    title: 'Leitura Individual / Vistoria Mensal',
+    subtitle: 'Leitura mensal e vistoria das unidades',
+    sections: [
+      { type: 'heading', text: '💡 O que é?' },
+      { type: 'body', text: 'Atividade mensal de leitura dos medidores e vistoria das unidades. Diferencia-se da Leitura Inicial pelo campo adicional abaixo do medidor na tela do app.' },
+      { type: 'heading', text: '🔧 Como executar' },
+      { type: 'steps', items: [
+        'Acessar o condomínio pela tela inicial e clicar em "Iniciar"',
+        'Obter geolocalização e enviar',
+        'Acessar "Ordens de Serviço" e carregar as OSs',
+        'Informar medidor e leitura de cada unidade',
+        'Registrar ocorrência e observação',
+        'Em ocorrências negativas: foto é OBRIGATÓRIA',
+        'Finalizar cada OS e terminar o pacote ao concluir o condomínio',
+      ]},
+      { type: 'alert', style: 'yellow', icon: '⚠️', title: 'Leitura Divergente', body: 'Quando houver leitura divergente, registrar corretamente a ocorrência correspondente. Ocorrências negativas exigem foto obrigatória.' },
+    ]
+  },
+  {
+    id: 'releitura',
+    icon: '🔍',
+    color: '#E8F0FE',
+    num: '08',
+    title: 'Releitura (Validação de Leitura)',
+    subtitle: 'Processo de confirmação das leituras realizadas',
+    sections: [
+      { type: 'heading', text: '💡 O que é?' },
+      { type: 'body', text: 'Processo de confirmação e validação das leituras já realizadas, garantindo a precisão dos dados coletados.' },
+      { type: 'heading', text: '🔧 Como executar' },
+      { type: 'steps', items: [
+        'Acessar o condomínio na tela inicial',
+        'Consultar por condomínio, endereço, CEP ou ID da atividade',
+        'Clicar em "Iniciar" e obter geolocalização',
+        'Validar informações do responsável e enviar',
+        'Acessar as OSs de releitura disponíveis',
+        'Confirmar as leituras conforme orientação',
+        'Registrar ocorrência, observação e enviar',
+      ]},
+      { type: 'alert', style: 'blue', icon: '💡', title: 'Diferencial da Releitura', body: 'A Releitura é ativada quando há necessidade de confirmar uma leitura anterior. Siga o mesmo fluxo da Leitura Individual, validando os dados já registrados.' },
+    ]
+  },
+  {
+    id: 'verificacao',
+    icon: '✅',
+    color: '#EBF7F0',
+    num: '09',
+    title: 'Verificação de Leitura',
+    subtitle: 'Métodos para garantir a precisão das leituras',
+    sections: [
+      { type: 'heading', text: '💡 O que é?' },
+      { type: 'body', text: 'Atividade para garantir a precisão das leituras coletadas, com métodos específicos de verificação.' },
+      { type: 'heading', text: '🔧 Como executar' },
+      { type: 'steps', items: [
+        'Acessar o condomínio e consultar as OSs de verificação',
+        'Clicar em "Iniciar" e obter geolocalização',
+        'Acessar "Ordens de Serviço" e carregar',
+        'Verificar as leituras conforme orientação da OS',
+        'Registrar resultado da verificação',
+        'Informar ocorrência e observação',
+        'Clicar em "Enviar" para concluir',
+      ]},
+    ]
+  },
+  {
+    id: 'religue',
+    icon: '🔓',
+    color: '#EBF7F0',
+    num: '10',
+    title: 'Religue de Fornecimento',
+    subtitle: 'Religue padrão e emergencial',
+    sections: [
+      { type: 'heading', text: '💡 O que é?' },
+      { type: 'body', text: 'Procedimentos para religar o fornecimento de gás conforme necessário — tanto religue padrão quanto emergencial.' },
+      { type: 'heading', text: '🔧 Como executar' },
+      { type: 'steps', items: [
+        'Acessar o condomínio e localizar a OS de religue',
+        'Clicar em "Iniciar" e obter geolocalização',
+        'Acessar "Ordens de Serviço"',
+        'Executar o procedimento físico de religue na unidade',
+        'Registrar no app: medidor, ocorrência e observação',
+        'Para religue emergencial: seguir mesmos passos com prioridade máxima',
+        'Clicar em "Enviar" para finalizar',
+      ]},
+      { type: 'alert', style: 'green', icon: '✅', title: 'Religue Emergencial', body: 'O religue emergencial segue o mesmo fluxo no app, porém com prioridade máxima no SLA. Executar imediatamente ao receber a OS.' },
+    ]
+  },
+  {
+    id: 'suspensao',
+    icon: '🔒',
+    color: '#FDF0EF',
+    num: '11',
+    title: 'Suspensão de Fornecimento',
+    subtitle: 'Tipos de suspensão e procedimentos no app',
+    sections: [
+      { type: 'heading', text: '💡 O que é?' },
+      { type: 'body', text: 'Procedimentos para suspender o fornecimento de gás conforme necessário, registrando corretamente no OFS.' },
+      { type: 'heading', text: '📋 Tipos de suspensão' },
+      { type: 'tags', items: ['Inadimplência', 'Falta de Cadastro', 'Problema no Medidor', 'Bloqueio Temporário', 'Definitiva (Morador)'] },
+      { type: 'heading', text: '🔧 Como executar' },
+      { type: 'steps', items: [
+        'Acessar o condomínio e localizar a OS de suspensão',
+        'Clicar em "Iniciar" e obter geolocalização',
+        'Acessar "Ordens de Serviço" e carregar',
+        'Executar o procedimento físico de suspensão na unidade',
+        'Selecionar o tipo correto de ocorrência de suspensão',
+        'Informar observação detalhada',
+        'Para suspensão por inadimplência: seguir vídeo explicativo disponível no treinamento',
+        'Clicar em "Enviar" para finalizar',
+      ]},
+      { type: 'alert', style: 'red', icon: '🚫', title: 'Atenção', body: 'Cada tipo de suspensão tem sua própria ocorrência no OFS. Selecionar sempre a ocorrência correta conforme o motivo da suspensão.' },
+    ]
+  },
+];
+
+// ===================== OFS FUNCTIONS =====================
+function initOFS() {
+  const list = document.getElementById('ofs-modules-list');
+  if (!list) return;
+  list.innerHTML = OFS_MODULES.map(m => `
+    <div class="manual-item" onclick="openOFSDetail('${m.id}')">
+      <div class="manual-item-icon" style="background:${m.color}">${m.icon}</div>
+      <div class="manual-item-text">
+        <div class="manual-item-num">MÓDULO ${m.num}</div>
+        <div class="manual-item-title">${m.title}</div>
+      </div>
+      <span class="manual-item-arrow">›</span>
+    </div>
+  `).join('');
+}
+
+function openOFSDetail(id) {
+  const mod = OFS_MODULES.find(m => m.id === id);
+  if (!mod) return;
+
+  let html = `
+    <div style="background:linear-gradient(135deg,#1565C0,#0D47A1);padding:24px 20px 20px">
+      <span style="font-size:36px;display:block;margin-bottom:10px">${mod.icon}</span>
+      <h2 style="color:white;font-size:20px;font-weight:700;line-height:1.2;margin-bottom:6px">${mod.title}</h2>
+      <p style="color:rgba(255,255,255,0.8);font-size:13px;line-height:1.5">${mod.subtitle}</p>
+    </div>
+    <div style="padding:16px">
+  `;
+
+  mod.sections.forEach(s => {
+    if (s.type === 'heading') {
+      html += `<div class="content-block"><h3>${s.text}</h3>`;
+    } else if (s.type === 'body') {
+      html += `<div class="info-card" style="margin-bottom:12px">${s.text}</div>`;
+    } else if (s.type === 'bullets') {
+      html += `<div class="bullet-list">` + s.items.map(i => `<div class="bullet-item"><div class="bi-dot"></div><span>${i}</span></div>`).join('') + `</div>`;
+    } else if (s.type === 'steps') {
+      html += `<div class="step-list">` + s.items.map((i, idx) => `<div class="step-item"><div class="step-num">${idx+1}</div><div class="step-text">${i}</div></div>`).join('') + `</div>`;
+    } else if (s.type === 'alert') {
+      html += `<div class="alert-box alert-${s.style}"><div class="ab-title">${s.icon} ${s.title}</div><div class="ab-body">${s.body}</div></div>`;
+    } else if (s.type === 'tags') {
+      html += `<div class="tag-row" style="margin-bottom:12px">` + s.items.map(t => `<span class="tag">${t}</span>`).join('') + `</div>`;
+    }
+    if (s.type === 'heading') html += `</div>`;
+  });
+
+  html += `<div style="height:16px"></div></div>`;
+
+  document.getElementById('ofs-detail-content').innerHTML = html;
+  document.getElementById('ofs-list-view').style.display = 'none';
+  document.getElementById('ofs-detail-view').style.display = 'block';
+  document.getElementById('topbar-title').textContent = mod.title;
+  document.getElementById('topbar-back').classList.add('show');
+  document.getElementById('content').scrollTop = 0;
+}
+
+function backFromOFS() {
+  document.getElementById('ofs-list-view').style.display = 'block';
+  document.getElementById('ofs-detail-view').style.display = 'none';
+  document.getElementById('topbar-title').textContent = 'Treinamento OFS';
+  document.getElementById('topbar-back').classList.remove('show');
+  document.getElementById('content').scrollTop = 0;
+}
 window.addEventListener('online', () => document.getElementById('offline-badge').classList.remove('show'));
 window.addEventListener('offline', () => document.getElementById('offline-badge').classList.add('show'));
 if (!navigator.onLine) document.getElementById('offline-badge').classList.add('show');
