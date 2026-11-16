@@ -252,10 +252,57 @@ h2.big { font-family: var(--display); font-weight: 900; font-size: 26px; line-he
 #onboarding .logo span { display: block; color: var(--orange); font-size: 22px; letter-spacing: 1px; margin-top: 2px; }
 #onboarding p { color: rgba(255,255,255,0.85); font-size: 15px; line-height: 1.5; margin: 16px 0 24px; }
 #onboarding label { display: block; font-size: 13px; font-weight: 700; margin-bottom: 6px; color: var(--sky); }
+#onboarding select { width: 100%; border: 2px solid rgba(255,255,255,0.2); background: #24496f; color: #fff; border-radius: 11px; padding: 13px 12px; font-size: 16px; font-family: inherit; margin-bottom: 14px; outline: none; }
+#onboarding select:disabled { opacity: .6; }
+#onboarding select:focus { border-color: var(--orange); }
+.onb-adm { background: none; border: none; color: var(--sky); font-size: 14px; font-weight: 600; margin-top: 18px; padding: 10px; cursor: pointer; text-decoration: underline; }
 #onboarding input { width: 100%; border: 2px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.08); color: #fff; border-radius: 11px; padding: 13px 14px; font-size: 16px; font-family: inherit; margin-bottom: 14px; outline: none; }
 #onboarding input:focus { border-color: var(--orange); }
 #onboarding input::placeholder { color: rgba(255,255,255,0.45); }
 #onb-err { color: #FFB4A8; font-size: 13.5px; margin-bottom: 10px; display: none; }
+
+/* ---------- Avisos ---------- */
+.aviso { background: var(--card); border: 1px solid var(--border); border-left: 4px solid var(--blue); border-radius: var(--radius-sm); padding: 12px 14px; margin-bottom: 8px; }
+.aviso.novo { border-left-color: var(--orange); background: #FFFBF7; }
+.aviso.off { opacity: .6; }
+.aviso-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
+.aviso-top b { font-size: 15px; color: var(--ink); line-height: 1.3; }
+.aviso p { font-size: 14px; line-height: 1.5; margin: 6px 0 8px; color: var(--text); }
+.aviso-foot { display: flex; justify-content: space-between; align-items: center; gap: 8px; font-size: 12.5px; color: var(--muted); flex-wrap: wrap; }
+.aviso-foot a { color: var(--blue); font-weight: 700; }
+
+/* ---------- ADM ---------- */
+.lbl { display: block; font-size: 13px; font-weight: 700; color: var(--navy); margin-bottom: 6px; }
+.inp { width: 100%; border: 2px solid var(--border); border-radius: 10px; padding: 12px; font-size: 16px; font-family: inherit; margin-bottom: 12px; background: var(--card); color: var(--ink); outline: none; }
+.inp:focus { border-color: var(--orange); }
+textarea.inp { resize: vertical; line-height: 1.45; }
+.mini { border: none; background: rgba(255,255,255,0.15); color: #fff; font-size: 12.5px; font-weight: 700; padding: 7px 10px; border-radius: 8px; cursor: pointer; }
+.mini.dark { background: var(--sky-faint); color: var(--navy); }
+.stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-bottom: 4px; }
+.stats div { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 10px 4px; text-align: center; }
+.stats b { display: block; font-family: var(--display); font-weight: 900; font-size: 20px; color: var(--navy); }
+.stats span { font-size: 11px; color: var(--muted); line-height: 1.2; display: block; margin-top: 2px; }
+.pessoa { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 12px; margin-bottom: 8px; }
+.pessoa-top { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 8px; }
+.pessoa-top .rt { min-width: 0; }
+.pessoa-top .rt b { display: block; font-size: 15px; color: var(--ink); }
+.pessoa-top .rt small { font-size: 12.5px; color: var(--muted); }
+.pessoa .pct { font-family: var(--display); font-weight: 900; font-size: 18px; color: var(--orange-dark); }
+.pessoa .pct.ok { color: var(--green); }
+.pessoa-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 8px; }
+.pessoa-tags span { font-size: 11.5px; padding: 3px 8px; border-radius: 12px; background: #EEF1F4; color: var(--muted); }
+.pessoa-tags span.ok { background: var(--green-bg); color: var(--green); font-weight: 700; }
+.erro-svc { display: grid; grid-template-columns: 120px 1fr 44px; align-items: center; gap: 8px; font-size: 13.5px; margin-bottom: 8px; }
+.erro-svc b { text-align: right; color: var(--red); }
+.bar.red > i { background: var(--red); }
+.err-q { background: var(--card); border: 1px solid var(--border); border-left: 4px solid var(--red); border-radius: var(--radius-sm); padding: 11px 13px; margin-bottom: 8px; }
+.err-q-top { display: flex; justify-content: space-between; gap: 8px; font-size: 12.5px; }
+.err-q-top small { color: var(--muted); }
+.err-q-top b { color: var(--red); white-space: nowrap; }
+.err-q p { font-size: 14.5px; color: var(--ink); margin-top: 4px; line-height: 1.4; }
+.checks { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 12px; max-height: 260px; overflow-y: auto; }
+.ck { display: flex; align-items: center; gap: 8px; font-size: 13.5px; background: var(--bg); border-radius: 8px; padding: 8px; cursor: pointer; }
+.ck input { width: 18px; height: 18px; accent-color: var(--orange); flex-shrink: 0; }
 
 #offline-badge { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(70px + env(safe-area-inset-bottom, 0)); background: var(--ink); color: #fff; font-size: 12.5px; padding: 7px 13px; border-radius: 20px; z-index: 20; display: none; }
 #offline-badge.show { display: block; }
@@ -268,13 +315,17 @@ h2.big { font-family: var(--display); font-weight: 900; font-size: 26px; line-he
 <!-- ============ ONBOARDING ============ -->
 <div id="onboarding" class="hidden">
   <div class="logo">DOMUS<span>LEITURISTA</span></div>
-  <p>Curso e guia de campo para leituristas.<br>Antes de começar, diga quem é você.</p>
+  <p>Curso e guia de campo para leituristas.<br>Entre com o mesmo acesso do Domus Frota.</p>
+  <label for="onb-base">Sua base</label>
+  <select id="onb-base" onchange="onbFiltrarNomes()" disabled><option value="">Carregando bases...</option></select>
   <label for="onb-nome">Seu nome</label>
-  <input id="onb-nome" type="text" placeholder="Ex.: Edson Silva" autocomplete="name">
-  <label for="onb-base">Sua base / filial</label>
-  <input id="onb-base" type="text" placeholder="Ex.: Caxias do Sul/RS">
-  <div id="onb-err">Preencha seu nome e sua base.</div>
-  <button class="btn primary" style="flex:none;width:100%" onclick="saveProfile()">Entrar →</button>
+  <select id="onb-nome" disabled><option value="">Selecione a base primeiro...</option></select>
+  <label for="onb-placa">Placa do seu carro (sua senha)</label>
+  <input id="onb-placa" type="text" placeholder="ABC1D23" autocomplete="off" autocapitalize="characters"
+    oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9]/g,'')" onkeydown="if(event.key==='Enter')saveProfile()">
+  <div id="onb-err"></div>
+  <button class="btn primary" id="onb-btn" style="flex:none;width:100%" onclick="saveProfile()">Entrar →</button>
+  <button class="onb-adm" onclick="onbAdm()">Sou gestor / ADM</button>
 </div>
 
 <div id="app">
@@ -312,6 +363,17 @@ const VIDEOS = {
   'suspensao':      '',
   'religue':        '',
   'releitura':      '',
+};
+
+/* Banco de dados central (Supabase, projeto Domus Gestão, tabelas guia_*).
+   Esta chave é pública por natureza: as regras do banco só deixam os
+   celulares ENVIAR progresso e LER avisos. Ler os dados da equipe exige login de ADM. */
+/* Cadastro de leituristas: o mesmo do Domus Frota (o gestor cria lá). */
+const FROTA_API = 'https://script.google.com/macros/s/AKfycbyqgC2fa2ZDdPTqP8ItLc2X9PgYGaZf3AtNO8TYLBHes9eZ0znRHmFBg-7cB7VotAT53w/exec';
+
+const SUPA = {
+  url: 'https://pllhonhrrrcfzpsrzdaz.supabase.co',
+  key: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBsbGhvbmhycnJjZnpwc3J6ZGF6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTM4MzQyNjUsImV4cCI6MjEwOTQxMDI2NX0.GuljOy6c9i3UlR92z8z8b_P8mEmfZTTQJW3gkqx1oBI',
 };
 
 /* =====================================================================
@@ -372,6 +434,21 @@ const LESSONS = [
     sections: [
       { type: 'steps', items: ['Toque em "Carregar" na tela de atividades', 'Habilite "Reagendar"', 'Escolha o dia e o período no calendário', 'Aponte ocorrência e observação', 'Toque em "Enviar"'] },
       { type: 'alert', style: 'red', title: '🚫 Restrições', items: ['Só dá para reagendar dentro do prazo do SLA', 'OS com prazo vencido não pode ser reagendada', 'Vale só para OS única, não para o condomínio inteiro'] },
+    ] },
+  { id: 'ofs-melhorias', icon: '✨', title: 'App OFS: melhorias novas', sub: 'O que mudou no app e como usar',
+    sections: [
+      { type: 'h', text: '1. Prévia das OSs sem iniciar o pacote' },
+      { type: 'p', text: 'Na rota, toque na atividade agrupada: a lista de OSs aparece sem precisar iniciar o pacote.' },
+      { type: 'h', text: '2. Buscar a OS pelo número do medidor' },
+      { type: 'p', text: 'No campo "Filtro", digite o número do medidor do cliente e a OS daquela unidade aparece.' },
+      { type: 'h', text: '3. Flash na câmera' },
+      { type: 'p', text: 'Nas atividades com foto, toque no botão amarelo para ligar o flash antes de fotografar o medidor.' },
+      { type: 'h', text: '4. Aviso de OS pendente' },
+      { type: 'p', text: 'Se ainda houver OS pendente, o app avisa antes de fechar o pacote. Volte e conclua a OS antes de terminar.' },
+      { type: 'h', text: '5. Pacote com uma única OS' },
+      { type: 'p', text: 'Quando o pacote tem só uma OS, a opção "Ocorrência em massa" não aparece. Baixe a OS normalmente.' },
+      { type: 'h', text: '6. Observação obrigatória na ocorrência em massa' },
+      { type: 'p', text: 'Sem escolher a observação, o botão "Aplicar" fica bloqueado.' },
     ] },
   { id: 'ofs-chat', icon: '💬', title: 'App OFS: chat', sub: 'Falar com o suporte em tempo real',
     sections: [
@@ -773,6 +850,62 @@ let checks = store.get('dl_checks', {});
 const saveProgress = () => store.set('dl_progress', progress);
 const saveChecks = () => store.set('dl_checks', checks);
 
+/* =====================================================================
+   ENVIO DO PROGRESSO PARA O BANCO (fila offline)
+   ===================================================================== */
+let deviceId = store.get('dl_device', null);
+if (!deviceId) { deviceId = 'd' + Date.now().toString(36) + Math.random().toString(36).slice(2, 10); store.set('dl_device', deviceId); }
+let queue = store.get('dl_queue', []);
+function track(tipo, servico, extra = {}) {
+  if (!profile) return;
+  queue.push({ device_id: deviceId, leiturista_id: profile.id || null, regional: (profile.regional || '').slice(0, 80) || null,
+    nome: String(profile.nome).slice(0, 80), base: String(profile.base).slice(0, 80), tipo, servico, created_at: new Date().toISOString(), ...extra });
+  if (queue.length > 500) queue = queue.slice(-500);
+  store.set('dl_queue', queue);
+  flushQueue();
+}
+let flushing = false;
+async function flushQueue() {
+  if (flushing || !queue.length || !navigator.onLine) return;
+  flushing = true;
+  const batch = queue.slice(0, 100);
+  try {
+    const res = await fetch(SUPA.url + '/rest/v1/guia_eventos', {
+      method: 'POST',
+      headers: { apikey: SUPA.key, Authorization: 'Bearer ' + SUPA.key, 'Content-Type': 'application/json', Prefer: 'return=minimal' },
+      body: JSON.stringify(batch),
+    });
+    if (res.ok) { queue = queue.slice(batch.length); store.set('dl_queue', queue); }
+  } catch (e) {}
+  flushing = false;
+  if (queue.length && navigator.onLine) setTimeout(flushQueue, 3000);
+}
+window.addEventListener('online', flushQueue);
+
+/* ---------- Avisos (lidos por todos) ---------- */
+let avisos = store.get('dl_avisos', []);
+let avisosVistos = store.get('dl_avisos_vistos', []);
+async function loadAvisos() {
+  try {
+    const res = await fetch(SUPA.url + '/rest/v1/guia_avisos?select=id,titulo,texto,link,created_at&ativo=eq.true&order=created_at.desc&limit=20',
+      { headers: { apikey: SUPA.key, Authorization: 'Bearer ' + SUPA.key } });
+    if (!res.ok) return;
+    avisos = await res.json();
+    store.set('dl_avisos', avisos);
+    const r = stack[stack.length - 1];
+    if (r && (r.name === 'home' || r.name === 'avisos')) render();
+  } catch (e) {}
+}
+const fmtData = iso => new Date(iso).toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit' });
+function avisoHtml(a) {
+  const novo = !avisosVistos.includes(a.id);
+  return `<div class="aviso ${novo ? 'novo' : ''}">
+    <div class="aviso-top"><b>${esc(a.titulo)}</b>${novo ? '<span class="badge soon">Novo</span>' : ''}</div>
+    <p>${esc(a.texto).replace(/\n/g, '<br>')}</p>
+    <div class="aviso-foot"><span>${fmtData(a.created_at)}</span>${a.link ? `<a href="${esc(a.link)}" target="_blank" rel="noopener">Abrir link ↗</a>` : ''}</div>
+  </div>`;
+}
+
 const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const svcById = id => SERVICES.find(s => s.id === id);
 const lessonById = id => LESSONS.find(l => l.id === id);
@@ -851,6 +984,7 @@ VIEWS.home = () => {
       <span class="t">${s.short}</span><span class="s">${s.sub}</span>
     </button>`;
   }).join('');
+  if (avisos[0] && !avisosVistos.includes(avisos[0].id)) setTimeout(() => { avisosVistos.push(avisos[0].id); store.set('dl_avisos_vistos', avisosVistos); }, 0);
   return { title: 'Início', html: `
     <div class="hero">
       <h2>Olá, <em>${first}</em>!</h2>
@@ -861,6 +995,8 @@ VIEWS.home = () => {
           <div class="bar"><i style="width:${st.pct}%"></i></div></span>
       </button>
     </div>
+    ${avisos.length ? `<p class="eyebrow">📣 Novidades da equipe</p>${avisoHtml(avisos[0])}
+      ${avisos.length > 1 ? `<button class="btn ghost" style="width:100%;margin-top:8px" onclick="go('avisos')">Ver todas as novidades (${avisos.length})</button>` : ''}` : ''}
     <p class="eyebrow">Serviços</p>
     <div class="svc-grid">${cards}</div>
     <div class="list" style="margin-top:10px">
@@ -947,6 +1083,7 @@ VIEWS.lesson = r => {
     </div>` };
 };
 function markLesson(id, silent) {
+  if (!progress.lessons[id]) track('licao', 'fundamentos', { item: id });
   progress.lessons[id] = true; saveProgress();
   if (fundamentosDone() && !progress.seen.fund) { progress.seen.fund = true; saveProgress(); toast('🎉 Módulo "Antes de ir a campo" concluído!'); }
   else if (!silent) toast('✓ Lição marcada como lida');
@@ -1096,6 +1233,7 @@ TAB.teste = s => {
 function answer(id, k) {
   const s = svcById(id), qs = quizState[id];
   qs.answered = k; if (k === s.quiz[qs.i].a) qs.score++;
+  track('resposta', id, { item: s.quiz[qs.i].q.slice(0, 300), acertou: k === s.quiz[qs.i].a });
   render();
 }
 function nextQ(id) {
@@ -1106,6 +1244,7 @@ function nextQ(id) {
     const prev = progress.quiz[id];
     progress.quiz[id] = { score: qs.score, passed: passed || !!(prev && prev.passed), date: new Date().toISOString() };
     saveProgress();
+    track('teste', id, { pontos: qs.score, total: s.quiz.length, acertou: passed });
   }
   render();
 }
@@ -1171,6 +1310,12 @@ VIEWS.faq = r => {
     <button class="btn primary" style="width:100%;margin-top:14px" onclick="${kind === 'lesson' ? `go('lesson',{id:'${id}'})` : `go('svc',{id:'${id}',tab:'${tab}'})`}">${label} →</button>` };
 };
 
+VIEWS.avisos = () => {
+  const html = avisos.length ? avisos.map(avisoHtml).join('') : '<div class="empty"><span class="e">📭</span>Nenhuma novidade por enquanto.</div>';
+  setTimeout(() => { avisosVistos = Array.from(new Set([...avisosVistos, ...avisos.map(a => a.id)])); store.set('dl_avisos_vistos', avisosVistos); }, 0);
+  return { title: 'Novidades', html };
+};
+
 /* ---------- Perfil ---------- */
 VIEWS.perfil = () => {
   const st = courseStats();
@@ -1189,12 +1334,292 @@ VIEWS.perfil = () => {
     </div>
     <p class="eyebrow">Curso: ${st.pct}% concluído</p>
     <div class="list">${res}</div>
+    <p class="eyebrow">Gestão</p>
+    <button class="row" onclick="go('adm')"><span class="ri">📊</span><span class="rt"><b>Área do ADM</b><small>Equipe, erros por base e avisos. Só para administradores.</small></span><span class="chev">›</span></button>
     <p class="eyebrow">Conta</p>
-    <button class="btn ghost" style="width:100%" onclick="logout()">Trocar de leiturista</button>
-    <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.5">Seu progresso fica salvo neste celular.</p>` };
+    <button class="btn ghost" style="width:100%" onclick="logout()">${profile ? 'Sair / trocar de leiturista' : 'Entrar como leiturista'}</button>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.5">Seu progresso fica salvo neste celular e é enviado ao seu gestor quando houver internet.</p>` };
 };
+/* =====================================================================
+   ÁREA DO ADM
+   ===================================================================== */
+let adm = { session: store.get('dl_adm_session', null), isAdmin: null, eventos: null, avisos: null, tab: 'equipe', base: '', msg: '', busy: false };
+
+async function authFetch(path, opts = {}) {
+  await ensureFresh();
+  const headers = { apikey: SUPA.key, Authorization: 'Bearer ' + (adm.session ? adm.session.access_token : SUPA.key), 'Content-Type': 'application/json', ...(opts.headers || {}) };
+  return fetch(SUPA.url + path, { ...opts, headers });
+}
+async function ensureFresh() {
+  const s = adm.session;
+  if (!s || Date.now() < s.expires_at - 60000) return;
+  try {
+    const r = await fetch(SUPA.url + '/auth/v1/token?grant_type=refresh_token', { method: 'POST', headers: { apikey: SUPA.key, 'Content-Type': 'application/json' }, body: JSON.stringify({ refresh_token: s.refresh_token }) });
+    if (r.ok) setSession(await r.json()); else setSession(null);
+  } catch (e) {}
+}
+function setSession(d) {
+  adm.session = d && d.access_token ? { access_token: d.access_token, refresh_token: d.refresh_token, expires_at: Date.now() + (d.expires_in || 3600) * 1000, email: (d.user && d.user.email) || (adm.session && adm.session.email) } : null;
+  store.set('dl_adm_session', adm.session);
+}
+async function admAuth(mode) {
+  const email = document.getElementById('adm-email').value.trim().toLowerCase();
+  const password = document.getElementById('adm-pass').value;
+  if (!email || password.length < 6) { adm.msg = 'Informe o e-mail e uma senha com pelo menos 6 caracteres.'; render(); return; }
+  adm.busy = true; adm.msg = ''; render();
+  try {
+    const url = mode === 'signup' ? '/auth/v1/signup' : '/auth/v1/token?grant_type=password';
+    const r = await fetch(SUPA.url + url, { method: 'POST', headers: { apikey: SUPA.key, 'Content-Type': 'application/json' }, body: JSON.stringify({ email, password }) });
+    const d = await r.json().catch(() => ({}));
+    if (!r.ok) adm.msg = mode === 'signup' ? 'Não foi possível criar o acesso. Talvez este e-mail já tenha senha: use "Entrar".' : 'E-mail ou senha incorretos (ou o e-mail ainda não foi confirmado).';
+    else if (d.access_token) { setSession(d); adm.isAdmin = null; }
+    else adm.msg = 'Pronto! Enviamos um e-mail de confirmação. Confirme e depois toque em "Entrar".';
+  } catch (e) { adm.msg = 'Sem internet. A área do ADM precisa de conexão.'; }
+  adm.busy = false; render();
+}
+function admLogout() { setSession(null); adm = { ...adm, isAdmin: null, eventos: null, avisos: null, msg: '' }; render(); }
+
+async function admLoad() {
+  adm.busy = true;
+  try {
+    const ck = await authFetch('/rest/v1/rpc/guia_is_admin', { method: 'POST', body: '{}' });
+    if (ck.status === 401) { setSession(null); adm.busy = false; render(); return; }
+    adm.isAdmin = ck.ok ? await ck.json() : false;
+    if (adm.isAdmin) {
+      const [ev, av, ad, roster] = await Promise.all([
+        authFetch('/rest/v1/guia_eventos?select=device_id,leiturista_id,nome,base,regional,tipo,servico,item,acertou,pontos,total,created_at&order=created_at.asc&limit=20000'),
+        authFetch('/rest/v1/guia_avisos?select=*&order=created_at.desc&limit=100'),
+        authFetch('/rest/v1/guia_admins?select=email,nome,papel,bases&order=nome.asc'),
+        frota('listarLeituristas').catch(() => null),
+      ]);
+      adm.eventos = ev.ok ? await ev.json() : [];
+      adm.avisos = av.ok ? await av.json() : [];
+      adm.admins = ad.ok ? await ad.json() : [];
+      const me = adm.admins.find(a => a.email === (adm.session.email || '').toLowerCase()) || { papel: 'gestor', bases: [] };
+      adm.papel = me.papel; adm.minhasBases = (me.bases || []).map(b => b.trim().toUpperCase());
+      adm.rosterTodo = roster || [];
+      adm.roster = adm.rosterTodo.filter(l => admVe(l.base, l.regional));
+    }
+  } catch (e) { adm.msg = 'Sem internet. A área do ADM precisa de conexão.'; }
+  adm.busy = false; render();
+}
+
+function admVe(base, regional) {
+  if (adm.papel === 'master') return true;
+  const b = String(base || '').trim().toUpperCase(), r = String(regional || '').trim().toUpperCase();
+  return adm.minhasBases.includes(b) || (r && adm.minhasBases.includes(r));
+}
+
+VIEWS.adm = () => {
+  if (!adm.session) {
+    return { title: 'Área do ADM', html: `
+      <div class="card" style="padding:18px">
+        <h2 class="big" style="font-size:22px">Entrar como ADM</h2>
+        <p style="font-size:14px;color:var(--muted);margin:6px 0 16px;line-height:1.5">Só e-mails autorizados pela Aracele conseguem ver os dados da equipe.</p>
+        <label class="lbl" for="adm-email">E-mail</label>
+        <input class="inp" id="adm-email" type="email" autocomplete="email" inputmode="email">
+        <label class="lbl" for="adm-pass">Senha</label>
+        <input class="inp" id="adm-pass" type="password" autocomplete="current-password" onkeydown="if(event.key==='Enter')admAuth('login')">
+        ${adm.msg ? `<div class="alert yellow" style="margin:4px 0 12px">${esc(adm.msg)}</div>` : ''}
+        <button class="btn primary" style="width:100%" ${adm.busy ? 'disabled' : ''} onclick="admAuth('login')">${adm.busy ? 'Aguarde...' : 'Entrar'}</button>
+        <button class="btn ghost" style="width:100%;margin-top:8px" ${adm.busy ? 'disabled' : ''} onclick="admAuth('signup')">Primeiro acesso: criar minha senha</button>
+      </div>` };
+  }
+  if (adm.isAdmin === null || (adm.isAdmin && !adm.eventos)) {
+    if (!adm.busy) setTimeout(admLoad, 0);
+    return { title: 'Área do ADM', html: `<div class="empty"><span class="e">⏳</span>Carregando os dados da equipe...${adm.msg ? `<br><br>${esc(adm.msg)}` : ''}</div>` };
+  }
+  if (!adm.isAdmin) {
+    return { title: 'Área do ADM', html: `<div class="empty"><span class="e">🔒</span>O e-mail <b>${esc(adm.session.email || '')}</b> ainda não está autorizado como ADM.<br>Peça para a Aracele liberar o seu acesso.</div>
+      <button class="btn ghost" style="width:100%" onclick="admLogout()">Sair</button>` };
+  }
+  const tabs = [['equipe', '👥 Equipe'], ['erros', '❌ Erros por base'], ['avisos', '📣 Avisos']];
+  if (adm.papel === 'master') tabs.push(['gestores', '🧑‍💼 Gestores']);
+  const bases = Array.from(new Set([...adm.roster.map(l => String(l.base).trim()), ...adm.eventos.map(e => e.base.trim())]))
+    .filter(Boolean).sort((a, b) => a.localeCompare(b, 'pt-BR'));
+  return { title: 'Área do ADM', flush: true, html: `
+    <div class="trail-head">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:10px">
+        <span style="font-size:13px;color:rgba(255,255,255,.8);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(adm.session.email || '')}</span>
+        <span style="display:flex;gap:6px;flex-shrink:0">
+          <button class="mini" onclick="adm.eventos=null;admLoad()">↻ Atualizar</button>
+          <button class="mini" onclick="admLogout()">Sair</button>
+        </span>
+      </div>
+      <div class="tabs">${tabs.map(t => `<button class="tab ${t[0] === adm.tab ? 'active' : ''}" onclick="adm.tab='${t[0]}';render()">${t[1]}</button>`).join('')}</div>
+    </div>
+    <div class="trail-body">
+      ${adm.papel !== 'master' ? `<div class="alert blue" style="margin-bottom:12px">Você vê a equipe de: <b>${esc(adm.minhasBases.join(', ') || 'nenhuma base ainda. Peça à Aracele para liberar.')}</b></div>` : ''}
+      ${adm.tab === 'equipe' || adm.tab === 'erros' ? `<select class="inp" onchange="adm.base=this.value;render()" aria-label="Filtrar por base">
+        <option value="">Todas as bases</option>${bases.map(b => `<option ${b === adm.base ? 'selected' : ''}>${esc(b)}</option>`).join('')}</select>` : ''}
+      ${ADM_TAB[adm.tab]()}
+    </div>` };
+};
+
+const ADM_TAB = {};
+ADM_TAB.equipe = () => {
+  const evs = adm.eventos.filter(e => !adm.base || e.base.trim() === adm.base);
+  const pessoas = {};
+  adm.roster.filter(l => !adm.base || String(l.base).trim() === adm.base).forEach(l => {
+    pessoas['L' + l.id] = { nome: l.nome, base: l.base, lessons: new Set(), passed: new Set(), last: null };
+  });
+  evs.forEach(e => {
+    const k = e.leiturista_id ? 'L' + e.leiturista_id : 'D' + e.device_id;
+    const p = pessoas[k] || (pessoas[k] = { nome: e.nome, base: e.base, lessons: new Set(), passed: new Set(), last: null });
+    p.last = e.created_at;
+    if (e.tipo === 'licao') p.lessons.add(e.item);
+    if (e.tipo === 'teste' && e.acertou) p.passed.add(e.servico);
+  });
+  const svcs = courseSvcs();
+  const lista = Object.values(pessoas).map(p => {
+    const fund = LESSONS.every(l => p.lessons.has(l.id));
+    const done = (fund ? 1 : 0) + svcs.filter(s => p.passed.has(s.id)).length;
+    return { ...p, fund, pct: Math.round(done / (1 + svcs.length) * 100) };
+  }).sort((a, b) => a.pct - b.pct || a.nome.localeCompare(b.nome, 'pt-BR'));
+  if (!lista.length) return `<div class="empty"><span class="e">📭</span>Ainda não chegou nenhum dado${adm.base ? ' desta base' : ''}.<br>Os dados aparecem quando os leituristas começam o curso com internet.</div>`;
+  const concl = lista.filter(p => p.pct === 100).length;
+  const naoComecou = lista.filter(p => !p.last).length;
+  const media = Math.round(lista.reduce((a, p) => a + p.pct, 0) / lista.length);
+  return `<div class="stats">
+      <div><b>${lista.length}</b><span>Leituristas</span></div>
+      <div><b>${concl}</b><span>Concluíram</span></div>
+      <div><b>${naoComecou}</b><span>Não começaram</span></div>
+      <div><b>${media}%</b><span>Média</span></div>
+    </div>
+    ${adm.rosterTodo.length ? '' : '<div class="alert yellow">Não consegui carregar a lista do Domus Frota agora. Aparecem só quem já usou o guia.</div>'}
+    <p class="eyebrow">Quem está mais atrasado aparece primeiro</p>
+    ${lista.map(p => `<div class="pessoa">
+      <div class="pessoa-top"><span class="rt"><b>${esc(p.nome)}</b><small>📍 ${esc(p.base)} · ${p.last ? 'último acesso ' + fmtData(p.last) : '<span style="color:var(--red)">ainda não entrou no guia</span>'}</small></span>
+        <b class="pct ${p.pct === 100 ? 'ok' : ''}">${p.pct}%</b></div>
+      <div class="bar"><i style="width:${p.pct}%"></i></div>
+      <div class="pessoa-tags">
+        <span class="${p.fund ? 'ok' : ''}">📘 Antes de ir a campo</span>
+        ${svcs.map(s => `<span class="${p.passed.has(s.id) ? 'ok' : ''}">${s.icon} ${s.short}</span>`).join('')}
+      </div></div>`).join('')}`;
+};
+ADM_TAB.erros = () => {
+  const resp = adm.eventos.filter(e => e.tipo === 'resposta' && (!adm.base || e.base.trim() === adm.base));
+  if (!resp.length) return `<div class="empty"><span class="e">📭</span>Ainda não há respostas de teste${adm.base ? ' desta base' : ''}.</div>`;
+  const porQ = {};
+  resp.forEach(e => {
+    const k = e.servico + '|' + e.item;
+    const q = porQ[k] || (porQ[k] = { servico: e.servico, item: e.item, erros: 0, total: 0 });
+    q.total++; if (!e.acertou) q.erros++;
+  });
+  const lista = Object.values(porQ).filter(q => q.erros > 0).sort((a, b) => b.erros - a.erros || b.erros / b.total - a.erros / a.total);
+  const porSvc = {};
+  resp.forEach(e => { const s = porSvc[e.servico] || (porSvc[e.servico] = { erros: 0, total: 0 }); s.total++; if (!e.acertou) s.erros++; });
+  const svcRows = Object.entries(porSvc).map(([id, v]) => ({ id, ...v, taxa: Math.round(v.erros / v.total * 100) })).sort((a, b) => b.taxa - a.taxa);
+  return `<p class="eyebrow">Taxa de erro por serviço</p>
+    ${svcRows.map(r => { const s = svcById(r.id); return `<div class="erro-svc"><span>${s ? s.icon + ' ' + s.short : esc(r.id)}</span>
+      <div class="bar red"><i style="width:${r.taxa}%"></i></div><b>${r.taxa}%</b></div>`; }).join('')}
+    <p class="eyebrow">Perguntas que mais erram</p>
+    ${lista.length ? lista.slice(0, 15).map(q => { const s = svcById(q.servico); return `<div class="err-q">
+      <div class="err-q-top"><small>${s ? s.icon + ' ' + s.title : esc(q.servico)}</small><b>${q.erros} de ${q.total} erraram</b></div>
+      <p>${esc(q.item)}</p></div>`; }).join('') : '<div class="alert green">Nenhum erro registrado. 🎉</div>'}
+    <p style="font-size:12.5px;color:var(--muted);margin-top:10px;line-height:1.5">Baseado nas respostas dos testes do curso. Use para decidir o que reforçar com cada base.</p>`;
+};
+ADM_TAB.avisos = () => `
+  <div class="card" style="padding:16px">
+    <b style="font-family:var(--display);font-weight:800;font-size:17px;color:var(--ink)">Publicar novidade para a equipe</b>
+    <label class="lbl" for="av-titulo" style="margin-top:12px">Título</label>
+    <input class="inp" id="av-titulo" maxlength="120" placeholder="Ex.: Nova busca pelo número do medidor">
+    <label class="lbl" for="av-texto">Mensagem</label>
+    <textarea class="inp" id="av-texto" rows="4" maxlength="2000" placeholder="Explique o que mudou e o que o leiturista deve fazer."></textarea>
+    <label class="lbl" for="av-link">Link (opcional, ex.: vídeo no YouTube)</label>
+    <input class="inp" id="av-link" type="url" placeholder="https://...">
+    ${adm.msg ? `<div class="alert yellow" style="margin:4px 0 12px">${esc(adm.msg)}</div>` : ''}
+    <button class="btn primary" style="width:100%" ${adm.busy ? 'disabled' : ''} onclick="publicarAviso()">Publicar para todos</button>
+  </div>
+  <p class="eyebrow">Avisos publicados</p>
+  ${adm.avisos.length ? adm.avisos.map(a => `<div class="aviso ${a.ativo ? '' : 'off'}">
+    <div class="aviso-top"><b>${esc(a.titulo)}</b>${a.ativo ? '<span class="badge done">No ar</span>' : '<span class="badge soon">Removido</span>'}</div>
+    <p>${esc(a.texto).replace(/\n/g, '<br>')}</p>
+    <div class="aviso-foot"><span>${fmtData(a.created_at)}${a.autor ? ' · ' + esc(a.autor) : ''}</span>
+      <button class="mini dark" onclick="toggleAviso(${a.id},${!a.ativo})">${a.ativo ? 'Tirar do ar' : 'Pôr no ar de novo'}</button></div>
+  </div>`).join('') : '<div class="empty">Nenhum aviso publicado ainda.</div>'}`;
+
+ADM_TAB.gestores = () => {
+  const todasBases = Array.from(new Set(adm.rosterTodo.map(l => String(l.base).trim()).filter(Boolean))).sort((a, b) => a.localeCompare(b, 'pt-BR'));
+  const regionais = Array.from(new Set(adm.rosterTodo.map(l => String(l.regional || '').trim()).filter(Boolean))).sort();
+  const opcoes = [...regionais.map(r => ['REGIONAL ' + r, r]), ...todasBases.map(b => [b, b])];
+  const ed = adm.editGestor || { email: '', nome: '', bases: [] };
+  const marcadas = new Set((ed.bases || []).map(b => b.toUpperCase()));
+  return `<div class="card" style="padding:16px">
+    <b style="font-family:var(--display);font-weight:800;font-size:17px;color:var(--ink)">${ed.email && adm.admins.some(a => a.email === ed.email) ? 'Editar gestor' : 'Liberar acesso de gestor'}</b>
+    <label class="lbl" for="g-nome" style="margin-top:12px">Nome</label>
+    <input class="inp" id="g-nome" value="${esc(ed.nome || '')}" placeholder="Ex.: Alex">
+    <label class="lbl" for="g-email">E-mail do gestor</label>
+    <input class="inp" id="g-email" type="email" value="${esc(ed.email || '')}" placeholder="gestor@email.com" ${ed.email && adm.admins.some(a => a.email === ed.email) ? 'readonly' : ''}>
+    <label class="lbl">Bases que ele acompanha</label>
+    ${opcoes.length ? `<div class="checks">${opcoes.map(([label, val]) => `<label class="ck"><input type="checkbox" value="${esc(val)}" ${marcadas.has(val.toUpperCase()) ? 'checked' : ''}><span>${esc(label)}</span></label>`).join('')}</div>`
+      : `<input class="inp" id="g-bases-txt" value="${esc((ed.bases || []).join(', '))}" placeholder="Bases separadas por vírgula">`}
+    ${adm.msg ? `<div class="alert yellow" style="margin:4px 0 12px">${esc(adm.msg)}</div>` : ''}
+    <button class="btn primary" style="width:100%" ${adm.busy ? 'disabled' : ''} onclick="salvarGestor()">Salvar</button>
+    ${adm.editGestor ? `<button class="btn ghost" style="width:100%;margin-top:8px" onclick="adm.editGestor=null;adm.msg='';render()">Cancelar</button>` : ''}
+    <p style="font-size:12.5px;color:var(--muted);margin-top:10px;line-height:1.5">Depois de salvar, o gestor abre o guia, toca em "Sou gestor / ADM" e em "Primeiro acesso: criar minha senha" com este e-mail.</p>
+  </div>
+  <p class="eyebrow">Quem tem acesso</p>
+  ${adm.admins.map(a => `<div class="pessoa">
+    <div class="pessoa-top"><span class="rt"><b>${esc(a.nome || a.email)}${a.papel === 'master' ? ' 👑' : ''}</b><small>${esc(a.email)}</small></span>
+      ${a.papel === 'master' ? '' : `<span style="display:flex;gap:6px"><button class="mini dark" onclick="editarGestor('${esc(a.email)}')">Editar</button><button class="mini dark" onclick="removerGestor('${esc(a.email)}')">Remover</button></span>`}</div>
+    <div class="pessoa-tags">${a.papel === 'master' ? '<span class="ok">Vê tudo</span>' : (a.bases.length ? a.bases.map(b => `<span>${esc(b)}</span>`).join('') : '<span>Nenhuma base</span>')}</div>
+  </div>`).join('')}`;
+};
+function editarGestor(email) { const a = adm.admins.find(x => x.email === email); adm.editGestor = { ...a }; adm.msg = ''; render(); document.getElementById('content').scrollTop = 0; }
+async function salvarGestor() {
+  const nome = document.getElementById('g-nome').value.trim();
+  const email = document.getElementById('g-email').value.trim().toLowerCase();
+  const txt = document.getElementById('g-bases-txt');
+  const bases = txt ? txt.value.split(',').map(s => s.trim()).filter(Boolean)
+    : Array.from(document.querySelectorAll('.checks input:checked')).map(i => i.value);
+  if (!nome || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { adm.msg = 'Preencha o nome e um e-mail válido.'; render(); return; }
+  if (!bases.length) { adm.msg = 'Marque pelo menos uma base.'; render(); return; }
+  adm.busy = true; adm.msg = ''; render();
+  const existe = adm.admins.some(a => a.email === email);
+  try {
+    const r = existe
+      ? await authFetch('/rest/v1/guia_admins?email=eq.' + encodeURIComponent(email), { method: 'PATCH', headers: { Prefer: 'return=representation' }, body: JSON.stringify({ nome, bases }) })
+      : await authFetch('/rest/v1/guia_admins', { method: 'POST', headers: { Prefer: 'return=representation' }, body: JSON.stringify({ email, nome, bases, papel: 'gestor' }) });
+    if (r.ok) {
+      const [row] = await r.json();
+      adm.admins = existe ? adm.admins.map(a => a.email === email ? row : a) : [...adm.admins, row];
+      adm.editGestor = null; toast('✓ Gestor salvo');
+    } else adm.msg = 'Não foi possível salvar.';
+  } catch (e) { adm.msg = 'Sem internet.'; }
+  adm.busy = false; render();
+}
+async function removerGestor(email) {
+  if (!confirm('Remover o acesso de ' + email + '?')) return;
+  try {
+    const r = await authFetch('/rest/v1/guia_admins?email=eq.' + encodeURIComponent(email), { method: 'DELETE' });
+    if (r.ok) { adm.admins = adm.admins.filter(a => a.email !== email); toast('Acesso removido'); render(); }
+  } catch (e) {}
+}
+
+async function publicarAviso() {
+  const titulo = document.getElementById('av-titulo').value.trim();
+  const texto = document.getElementById('av-texto').value.trim();
+  const link = document.getElementById('av-link').value.trim();
+  if (!titulo || !texto) { adm.msg = 'Preencha o título e a mensagem.'; render(); return; }
+  if (link && !/^https:\/\//.test(link)) { adm.msg = 'O link precisa começar com https://'; render(); return; }
+  adm.busy = true; adm.msg = ''; render();
+  try {
+    const r = await authFetch('/rest/v1/guia_avisos', { method: 'POST', headers: { Prefer: 'return=representation' }, body: JSON.stringify({ titulo, texto, link: link || null, autor: adm.session.email }) });
+    if (r.ok) { const [a] = await r.json(); adm.avisos.unshift(a); toast('📣 Aviso publicado!'); loadAvisos(); }
+    else adm.msg = 'Não foi possível publicar. Tente de novo.';
+  } catch (e) { adm.msg = 'Sem internet.'; }
+  adm.busy = false; render();
+}
+async function toggleAviso(id, ativo) {
+  try {
+    const r = await authFetch('/rest/v1/guia_avisos?id=eq.' + id, { method: 'PATCH', body: JSON.stringify({ ativo }) });
+    if (r.ok) { const a = adm.avisos.find(x => x.id === id); if (a) a.ativo = ativo; loadAvisos(); render(); }
+  } catch (e) {}
+}
+
 function logout() {
-  if (!confirm('Trocar de leiturista? O progresso deste celular será apagado.')) return;
+  if (profile && !confirm('Sair? O progresso deste celular será apagado (o que já foi enviado ao gestor continua salvo).')) return;
   try { localStorage.removeItem('user_profile'); localStorage.removeItem('dl_progress'); localStorage.removeItem('dl_checks'); } catch (e) {}
   location.reload();
 }
@@ -1202,20 +1627,69 @@ function logout() {
 /* =====================================================================
    INÍCIO
    ===================================================================== */
-function saveProfile() {
-  const nome = document.getElementById('onb-nome').value.trim();
-  const base = document.getElementById('onb-base').value.trim();
-  if (!nome || !base) { document.getElementById('onb-err').style.display = 'block'; return; }
-  profile = { nome, base, since: new Date().toISOString() };
-  store.set('user_profile', profile);
+/* ---------- Login do leiturista (mesmo cadastro do Domus Frota) ---------- */
+async function frota(acao, ...args) {
+  const r = await fetch(FROTA_API, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify({ acao, args }), redirect: 'follow' });
+  const j = await r.json();
+  if (!j || !j.ok) throw new Error((j && j.erro) || 'Erro no servidor do Domus Frota');
+  return j.dados;
+}
+let cadastroFrota = null;
+function onbErro(msg) { const e = document.getElementById('onb-err'); e.textContent = msg; e.style.display = msg ? 'block' : 'none'; }
+async function onbCarregar() {
+  const sel = document.getElementById('onb-base');
+  try {
+    cadastroFrota = await frota('listarLeituristas');
+    const bases = Array.from(new Set(cadastroFrota.map(l => l.base))).sort((a, b) => String(a).localeCompare(b, 'pt-BR'));
+    sel.innerHTML = '<option value="">Selecione sua base...</option>' + bases.map(b => `<option>${esc(b)}</option>`).join('');
+    sel.disabled = false; onbErro('');
+  } catch (e) {
+    sel.innerHTML = '<option value="">Sem conexão</option>';
+    onbErro('Para entrar pela primeira vez é preciso internet. Conecte e toque em "Tentar de novo".');
+    document.getElementById('onb-btn').textContent = 'Tentar de novo';
+  }
+}
+function onbFiltrarNomes() {
+  const base = document.getElementById('onb-base').value, sel = document.getElementById('onb-nome');
+  if (!base) { sel.disabled = true; sel.innerHTML = '<option value="">Selecione a base primeiro...</option>'; return; }
+  sel.innerHTML = '<option value="">Selecione seu nome...</option>' + cadastroFrota.filter(l => l.base === base)
+    .sort((a, b) => String(a.nome).localeCompare(b.nome, 'pt-BR'))
+    .map(l => `<option value="${esc(l.id)}">${esc(l.nome)}</option>`).join('');
+  sel.disabled = false;
+}
+async function saveProfile() {
+  if (!cadastroFrota) { document.getElementById('onb-btn').textContent = 'Entrar →'; onbErro(''); return onbCarregar(); }
+  const id = document.getElementById('onb-nome').value;
+  const placa = document.getElementById('onb-placa').value.trim();
+  if (!id) return onbErro('Selecione sua base e seu nome.');
+  if (!placa) return onbErro('Digite a placa do seu carro.');
+  const btn = document.getElementById('onb-btn');
+  btn.disabled = true; btn.textContent = 'Entrando...'; onbErro('');
+  try {
+    const u = await frota('entrarLeiturista', id, placa);
+    profile = { id: String(id), nome: u.nome, base: u.base, regional: u.regional || '', since: new Date().toISOString() };
+    store.set('user_profile', profile);
+    document.getElementById('onboarding').classList.add('hidden');
+    render();
+  } catch (e) {
+    onbErro(e.message && !/fetch|network/i.test(e.message) ? e.message : 'Sem conexão. Tente de novo.');
+  }
+  btn.disabled = false; btn.textContent = 'Entrar →';
+}
+function onbAdm() {
   document.getElementById('onboarding').classList.add('hidden');
+  stack = [{ name: 'perfil' }, { name: 'adm' }];
+  history.pushState({ d: 2 }, '');
   render();
 }
 
 stack = [{ name: 'home' }];
 history.replaceState({ d: 1 }, '');
-if (!profile) document.getElementById('onboarding').classList.remove('hidden');
+if (!profile && adm.session) { stack = [{ name: 'perfil' }, { name: 'adm' }]; history.pushState({ d: 2 }, ''); }
+else if (!profile) { document.getElementById('onboarding').classList.remove('hidden'); onbCarregar(); }
 render();
+loadAvisos();
+flushQueue();
 
 const badge = document.getElementById('offline-badge');
 window.addEventListener('online', () => badge.classList.remove('show'));
