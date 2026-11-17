@@ -50,3 +50,10 @@ Precisa de HTTPS para o Service Worker funcionar.
 ## Atualização de conteúdo
 Todo o conteúdo está em `index.html`, nas constantes `DETAILS` e `CHECKLISTS`.
 Edite diretamente para atualizar textos, etapas ou adicionar novos checklists.
+
+## Versão 2 — App de curso (novembro/2026)
+- Cada serviço é uma trilha: Vídeo · Passo a passo · Como baixar a OS · Erros comuns · Checklist · Teste
+- **Para colocar um vídeo:** em `index.html`, procure `const VIDEOS` e cole o link do YouTube no serviço certo
+- Assistente "Como baixar" fica em `const BAIXA` (rascunho, nomes das ocorrências a confirmar)
+- Dúvidas rápidas da aba Dúvidas ficam em `const FAQ`
+- Ao publicar mudanças, aumente a versão em `sw.js` (`domus-leiturista-v2` → `v3`)
